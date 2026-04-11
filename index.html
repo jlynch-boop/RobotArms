@@ -204,17 +204,6 @@
     .narrate-btn:hover { transform: scale(1.05); }
     .narrate-btn:active { transform: scale(0.95); }
     
-    .voice-select {
-      padding: 10px 15px;
-      border-radius: 25px;
-      border: 3px solid #764ba2;
-      background: white;
-      font-size: 14px;
-      font-family: inherit;
-      cursor: pointer;
-      max-width: 200px;
-    }
-    
     .sound-waves {
       display: none;
       justify-content: center;
@@ -413,9 +402,6 @@
       <p class="scene-text" id="sceneText">You're standing in front of a magical castle!</p>
       <div class="narrate-controls">
         <button class="narrate-btn" id="narrateBtn" onclick="narrateText()">🔊 Listen</button>
-        <select class="voice-select" id="voiceSelect" onchange="previewVoice()">
-          <option value="">Loading voices...</option>
-        </select>
       </div>
       <div class="choices" id="choices"></div>
       <a class="back-home" onclick="resetStory()">🔄 Start Over</a>
@@ -719,74 +705,46 @@
     
     let currentNode = 'start';
     let speechSynthesis = window.speechSynthesis;
-    let availableVoices = [];
+    let selectedVoice = null;
     
-    // Load voices
-    function loadVoices() {
-      availableVoices = speechSynthesis.getVoices();
-      const voiceSelect = document.getElementById('voiceSelect');
-      voiceSelect.innerHTML = '';
+    // Auto-select best available voice
+    function selectBestVoice() {
+      const voices = speechSynthesis.getVoices();
+      const englishVoices = voices.filter(v => v.lang.startsWith('en'));
       
-      // Try to find the best voices (prefer English voices with natural quality)
-      const englishVoices = availableVoices.filter(v => v.lang.startsWith('en'));
-      const otherVoices = availableVoices.filter(v => !v.lang.startsWith('en'));
+      // Priority order for natural-sounding voices
+      const priorityNames = ['Google', 'Natural', 'Enhanced', 'Premium', 'Samantha', 'Daniel', 'Karen', 'Moira', 'Karen', 'Zira'];
       
-      // Group by quality indicators
-      const prioritizedVoices = [...englishVoices];
-      
-      if (prioritizedVoices.length === 0) {
-        voiceSelect.innerHTML = '<option value="">No voices available</option>';
-        return;
+      for (const priority of priorityNames) {
+        const found = englishVoices.find(v => v.name.includes(priority));
+        if (found) {
+          selectedVoice = found;
+          console.log('Selected voice:', found.name);
+          return;
+        }
       }
       
-      prioritizedVoices.forEach((voice, i) => {
-        const option = document.createElement('option');
-        option.value = voice.name;
-        // Mark premium voices
-        const label = voice.name.includes('Premium') || voice.name.includes('Natural') || voice.name.includes('Enhanced') 
-          ? `${voice.name} ⭐` 
-          : voice.name;
-        option.textContent = label.length > 40 ? label.substring(0, 37) + '...' : label;
-        voiceSelect.appendChild(option);
-      });
-      
-      // Try to select a good default (prefer Google or natural-sounding voices)
-      const goodDefault = prioritizedVoices.find(v => 
-        v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Samantha') || v.name.includes('Daniel')
-      );
-      if (goodDefault) {
-        voiceSelect.value = goodDefault.name;
+      // Fallback to any English voice
+      if (englishVoices.length > 0) {
+        selectedVoice = englishVoices[0];
+        console.log('Selected voice:', selectedVoice.name);
       }
     }
     
     // Load voices when available
     if (speechSynthesis.onvoiceschanged !== undefined) {
-      speechSynthesis.onvoiceschanged = loadVoices;
+      speechSynthesis.onvoiceschanged = selectBestVoice;
     }
-    loadVoices();
-    
-    function previewVoice() {
-      const voiceSelect = document.getElementById('voiceSelect');
-      if (voiceSelect.value) {
-        speechSynthesis.cancel();
-        const test = new SpeechSynthesisUtterance("Hello! Pick me for the story!");
-        const voice = availableVoices.find(v => v.name === voiceSelect.value);
-        if (voice) test.voice = voice;
-        test.rate = 0.9;
-        speechSynthesis.speak(test);
-      }
-    }
+    selectBestVoice();
     
     function narrateText() {
       speechSynthesis.cancel();
       
       const text = document.getElementById('sceneText').textContent;
-      const voiceSelect = document.getElementById('voiceSelect');
       
       currentUtterance = new SpeechSynthesisUtterance(text);
       
-      const voice = availableVoices.find(v => v.name === voiceSelect.value);
-      if (voice) currentUtterance.voice = voice;
+      if (selectedVoice) currentUtterance.voice = selectedVoice;
       
       currentUtterance.rate = 0.85;
       currentUtterance.pitch = 1.1;
@@ -858,7 +816,6 @@
     
     function openStory() {
       document.getElementById('storyModal').classList.add('active');
-      loadVoices(); // Refresh voices
       showScene('start');
     }
     
@@ -886,7 +843,6 @@
       
       const ball = document.getElementById('magic8Ball');
       const text = document.getElementById('magic8Text');
-      const voiceSelect = document.getElementById('voiceSelect');
       
       ball.style.animation = 'none';
       ball.offsetHeight;
@@ -897,8 +853,7 @@
         text.textContent = response;
         
         const utterance = new SpeechSynthesisUtterance(response);
-        const voice = availableVoices.find(v => v.name === voiceSelect.value);
-        if (voice) utterance.voice = voice;
+        if (selectedVoice) utterance.voice = selectedVoice;
         utterance.rate = 0.9;
         utterance.pitch = 1.2;
         speechSynthesis.speak(utterance);
@@ -907,7 +862,6 @@
     
     function openMagic8Ball() {
       document.getElementById('magic8Modal').classList.add('active');
-      loadVoices();
       document.getElementById('magic8Text').textContent = "Think of a question, then shake me!";
     }
     
@@ -935,7 +889,6 @@
       
       const crystal = document.getElementById('fortuneCrystal');
       const text = document.getElementById('fortuneText');
-      const voiceSelect = document.getElementById('voiceSelect');
       
       crystal.style.animation = 'none';
       crystal.offsetHeight;
@@ -947,8 +900,7 @@
         crystal.textContent = '🌟';
         
         const utterance = new SpeechSynthesisUtterance(fortune);
-        const voice = availableVoices.find(v => v.name === voiceSelect.value);
-        if (voice) utterance.voice = voice;
+        if (selectedVoice) utterance.voice = selectedVoice;
         utterance.rate = 0.85;
         utterance.pitch = 1.15;
         speechSynthesis.speak(utterance);
@@ -957,7 +909,6 @@
     
     function openFortuneTeller() {
       document.getElementById('fortuneModal').classList.add('active');
-      loadVoices();
       document.getElementById('fortuneText').textContent = "Gaze into the crystal and discover your fortune!";
       document.getElementById('fortuneCrystal').textContent = '🔮';
     }
