@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Odin's 3D Prints - Fun designs to print at home">
+  <title>Odin's 3D Prints</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖨️</text></svg>">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Comic Neue', 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .header {
+      text-align: center;
+      padding: 30px 20px;
+    }
+    
+    .back-link {
+      display: inline-block;
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      margin-bottom: 20px;
+      padding: 10px 20px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 30px;
+      transition: transform 0.2s;
+    }
+    
+    .back-link:hover { transform: scale(1.05); }
+    
+    .title {
+      font-size: 48px;
+      font-weight: 900;
+      color: white;
+      text-shadow: 4px 4px 0 #0d7a6e, 6px 6px 20px rgba(0,0,0,0.2);
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      font-size: 20px;
+      color: #ffeaa7;
+      text-shadow: 2px 2px 0 #0d7a6e;
+    }
+    
+    .prints-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+    
+    .print-card {
+      background: white;
+      border-radius: 25px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .print-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    }
+    
+    .print-preview {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 100px;
+    }
+    
+    .print-card:nth-child(1) .print-preview { background: linear-gradient(135deg, #ff6b6b, #ee5a5a); }
+    .print-card:nth-child(2) .print-preview { background: linear-gradient(135deg, #74b9ff, #0984e3); }
+    .print-card:nth-child(3) .print-preview { background: linear-gradient(135deg, #fdcb6e, #f39c12); }
+    .print-card:nth-child(4) .print-preview { background: linear-gradient(135deg, #a29bfe, #6c5ce7); }
+    
+    .print-info {
+      padding: 20px;
+    }
+    
+    .print-title {
+      font-size: 22px;
+      font-weight: 900;
+      color: #2d3436;
+      margin-bottom: 8px;
+    }
+    
+    .print-desc {
+      font-size: 15px;
+      color: #636e72;
+      margin-bottom: 15px;
+      line-height: 1.4;
+    }
+    
+    .print-meta {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      color: #2d3436;
+      background: #f5f6fa;
+      padding: 5px 10px;
+      border-radius: 15px;
+    }
+    
+    .download-btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .download-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 5px 20px rgba(17, 153, 142, 0.4);
+    }
+    
+    .download-btn:active { transform: scale(0.98); }
+    
+    .maker-note {
+      background: rgba(255,255,255,0.9);
+      border-radius: 20px;
+      padding: 20px;
+      margin-top: 30px;
+      text-align: center;
+    }
+    
+    .maker-note p {
+      color: #2d3436;
+      font-size: 16px;
+    }
+    
+    .maker-note .heart { color: #ff6b6b; }
+    
+    .stl-note {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #888;
+    }
+    
+    @media (max-width: 600px) {
+      .title { font-size: 32px; }
+      .subtitle { font-size: 16px; }
+      .print-preview { height: 140px; font-size: 70px; }
+      .print-title { font-size: 18px; }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <a href="index.html" class="back-link">← Back to Magic Lab</a>
+      <h1 class="title">🖨️ Odin's 3D Prints</h1>
+      <p class="subtitle">Fun designs to print at home!</p>
+    </header>
+    
+    <div class="prints-grid">
+      <!-- Rocket -->
+      <div class="print-card">
+        <div class="print-preview">🚀</div>
+        <div class="print-info">
+          <h2 class="print-title">Rocket Ship</h2>
+          <p class="print-desc">A cool rocket with fins! Great for desk decoration or imaginative play.</p>
+          <div class="print-meta">
+            <span class="meta-item">⭐ Easy</span>
+            <span class="meta-item">⏱️ 1.5 hrs</span>
+            <span class="meta-item">📏 60mm tall</span>
+          </div>
+          <a href="prints/rocket.stl" download class="download-btn">⬇️ Download STL</a>
+          <p class="stl-note">File: rocket.stl (33 KB)</p>
+        </div>
+      </div>
+      
+      <!-- Star -->
+      <div class="print-card">
+        <div class="print-preview">⭐</div>
+        <div class="print-info">
+          <h2 class="print-title">Star Decoration</h2>
+          <p class="print-desc">A shiny 5-point star! Perfect for hanging on your wall or as a gift.</p>
+          <div class="print-meta">
+            <span class="meta-item">⭐ Easy</span>
+            <span class="meta-item">⏱️ 45 min</span>
+            <span class="meta-item">📏 80mm wide</span>
+          </div>
+          <a href="prints/star.stl" download class="download-btn">⬇️ Download STL</a>
+          <p class="stl-note">File: star.stl (19 KB)</p>
+        </div>
+      </div>
+      
+      <!-- Robot Head -->
+      <div class="print-card">
+        <div class="print-preview">🤖</div>
+        <div class="print-info">
+          <h2 class="print-title">Robot Keychain</h2>
+          <p class="print-desc">A cute robot head with big eyes! Has a hole for a keychain or string.</p>
+          <div class="print-meta">
+            <span class="meta-item">⭐⭐ Medium</span>
+            <span class="meta-item">⏱️ 1 hr</span>
+            <span class="meta-item">📏 40mm wide</span>
+          </div>
+          <a href="prints/robot_head.stl" download class="download-btn">⬇️ Download STL</a>
+          <p class="stl-note">File: robot_head.stl (95 KB)</p>
+        </div>
+      </div>
+      
+      <!-- Name Tag -->
+      <div class="print-card">
+        <div class="print-preview">📛</div>
+        <div class="print-info">
+          <h2 class="print-title">Name Tag Plate</h2>
+          <p class="print-desc">A simple plate with a hole - perfect for your name or a special message!</p>
+          <div class="print-meta">
+            <span class="meta-item">⭐ Easy</span>
+            <span class="meta-item">⏱️ 30 min</span>
+            <span class="meta-item">📏 80x25mm</span>
+          </div>
+          <a href="prints/nametag.stl" download class="download-btn">⬇️ Download STL</a>
+          <p class="stl-note">File: nametag.stl (17 KB)</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="maker-note">
+      <p>Made with ❤️ by Odin</p>
+      <p style="font-size: 14px; margin-top: 8px; color: #636e72;">
+        Designed using OpenSCAD • Printed on Bambu Lab
+      </p>
+    </div>
+  </div>
+</body>
+</html>
