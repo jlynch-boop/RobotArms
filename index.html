@@ -3,398 +3,744 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Robot Arms AI - Building the future of robotics automation">
-  <title>Robot Arms AI</title>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+  <meta name="description" content="Odin's Magic Lab - Fun AI Games for Kids">
+  <title>Odin's Magic Lab</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
   <style>
-    :root {
-      --bg-dark: #0a0a0f;
-      --bg-card: #12121a;
-      --accent: #6c63ff;
-      --accent-glow: rgba(108, 99, 255, 0.33);
-      --accent2: #00d4ff;
-      --text: #e0e0e8;
-      --text-dim: #8888a0;
-      --token-keyword: #ff79c6;
-      --token-string: #f1fa8c;
-      --token-function: #8be9fd;
-      --token-number: #bd93f9;
-      --token-variable: #50fa7b;
-      --token-comment: #6272a4;
-    }
-    
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
-      font-family: 'Space Grotesk', sans-serif;
-      background: var(--bg-dark);
-      color: var(--text);
+      font-family: 'Comic Neue', 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
       min-height: 100vh;
-      overflow: hidden;
+      overflow-x: hidden;
     }
     
-    .scene {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .grid {
-      position: absolute;
+    /* Floating sparkles background */
+    .sparkles {
+      position: fixed;
       inset: 0;
-      background-image: 
-        linear-gradient(var(--accent-glow) 1px, transparent 1px),
-        linear-gradient(90deg, var(--accent-glow) 1px, transparent 1px);
-      background-size: 50px 50px;
-      opacity: 0.3;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
     }
     
-    .robot-container {
+    .sparkle {
       position: absolute;
-      left: 50%;
-      bottom: 12%;
-      transform: translateX(-50%);
-      width: 280px;
-      height: 360px;
+      font-size: 24px;
+      animation: float 6s ease-in-out infinite;
+      opacity: 0.6;
     }
     
-    .robot-arm {
-      width: 100%;
-      height: 100%;
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
     }
     
-    .code-block {
-      position: absolute;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      background: var(--bg-card);
-      padding: 10px 14px;
-      padding-top: 24px;
-      border-radius: 6px;
-      border: 1px solid #2a2a3e;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-      white-space: nowrap;
-      z-index: 10;
+    /* Main container */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      min-height: 100vh;
     }
     
-    .code-block::before {
-      content: '';
-      position: absolute;
-      top: 7px;
-      left: 7px;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--token-variable);
-      box-shadow: 10px 0 0 var(--token-string), 20px 0 0 var(--token-keyword);
-    }
-    
-    .code-block::after {
-      content: '';
-      position: absolute;
-      bottom: 6px;
-      right: 6px;
-      width: 30px;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), transparent);
-      border-radius: 2px;
-    }
-    
-    .token { display: inline; }
-    .keyword { color: var(--token-keyword); }
-    .string { color: var(--token-string); }
-    .func { color: var(--token-function); }
-    .num { color: var(--token-number); }
-    .var { color: var(--token-variable); }
-    .comment { color: var(--token-comment); font-style: italic; }
-    
-    .block-1 { top: 18%; left: 6%; animation: float1 5s ease-in-out infinite; }
-    .block-2 { top: 14%; right: 8%; animation: float2 6s ease-in-out infinite; }
-    .block-3 { bottom: 32%; left: 10%; animation: float3 5.5s ease-in-out infinite; }
-    .block-4 { bottom: 26%; right: 6%; animation: float1 7s ease-in-out infinite reverse; }
-    
-    @keyframes float1 {
-      0%, 100% { transform: translate(0, 0); }
-      50% { transform: translate(6px, -12px); }
-    }
-    @keyframes float2 {
-      0%, 100% { transform: translate(0, 0); }
-      50% { transform: translate(-8px, -10px); }
-    }
-    @keyframes float3 {
-      0%, 100% { transform: translate(0, 0); }
-      50% { transform: translate(8px, -10px); }
-    }
-    
-    .logo {
-      position: absolute;
-      top: 4%;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      color: var(--text);
-      opacity: 0.8;
-      z-index: 30;
-    }
-    .logo span {
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    
-    .banner {
-      position: absolute;
-      bottom: 4%;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 30;
+    /* Header */
+    .header {
       text-align: center;
+      padding: 30px 20px;
     }
     
-    .banner-inner {
-      display: inline-flex;
-      align-items: center;
-      gap: 18px;
-      padding: 16px 32px;
-      background: linear-gradient(135deg, #1a1a2e 0%, #12121a 100%);
-      border: 1px solid var(--accent);
-      border-radius: 10px;
-      box-shadow: 0 0 25px var(--accent-glow);
+    .title {
+      font-size: 48px;
+      font-weight: 900;
+      color: white;
+      text-shadow: 4px 4px 0 #5a4a9e, 6px 6px 20px rgba(0,0,0,0.3);
+      margin-bottom: 10px;
+      animation: titleBounce 2s ease-in-out infinite;
     }
     
-    .wrench {
-      font-size: 20px;
-      animation: wrenchWave 1s ease-in-out infinite;
-    }
-    .wrench:last-child { animation-delay: 0.5s; }
-    @keyframes wrenchWave {
-      0%, 100% { transform: rotate(-10deg); }
-      50% { transform: rotate(10deg); }
-    }
-    
-    h1 {
-      font-size: 22px;
-      font-weight: 700;
-      background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: 2px;
+    @keyframes titleBounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
     }
     
     .subtitle {
-      font-size: 12px;
-      color: var(--text-dim);
-      margin-top: 3px;
+      font-size: 20px;
+      color: #ffeaa7;
+      text-shadow: 2px 2px 0 #5a4a9e;
     }
     
-    .email-form {
-      margin-top: 12px;
-      display: flex;
-      gap: 8px;
-      justify-content: center;
+    /* Welcome character */
+    .welcome-character {
+      text-align: center;
+      margin: 20px 0;
     }
     
-    .email-input {
-      padding: 8px 12px;
-      font-size: 12px;
-      font-family: 'Space Grotesk', sans-serif;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(108, 99, 255, 0.3);
-      border-radius: 5px;
-      color: var(--text);
-      width: 180px;
-      outline: none;
-      transition: border-color 0.3s, box-shadow 0.3s;
-    }
-    .email-input::placeholder { color: var(--text-dim); }
-    .email-input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 12px var(--accent-glow);
+    .character {
+      font-size: 120px;
+      animation: wave 1s ease-in-out infinite;
+      display: inline-block;
     }
     
-    .submit-btn {
-      padding: 8px 16px;
-      font-size: 12px;
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--accent) 0%, #8b7fff 100%);
-      border: none;
-      border-radius: 5px;
-      color: white;
+    @keyframes wave {
+      0%, 100% { transform: rotate(-5deg); }
+      50% { transform: rotate(5deg); }
+    }
+    
+    /* Game cards */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+    
+    .game-card {
+      background: white;
+      border-radius: 25px;
+      padding: 30px 25px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
       cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 4px solid transparent;
+    }
+    
+    .game-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+    
+    .game-card:nth-child(1) { border-color: #ff6b6b; }
+    .game-card:nth-child(2) { border-color: #4ecdc4; }
+    .game-card:nth-child(3) { border-color: #ffe66d; }
+    
+    .game-icon {
+      font-size: 70px;
+      margin-bottom: 15px;
+      display: block;
+    }
+    
+    .game-title {
+      font-size: 24px;
+      font-weight: 900;
+      color: #2d3436;
+      margin-bottom: 8px;
+    }
+    
+    .game-desc {
+      font-size: 16px;
+      color: #636e72;
+    }
+    
+    .play-btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 12px 30px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: 700;
+      text-decoration: none;
       transition: transform 0.2s, box-shadow 0.2s;
     }
-    .submit-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 15px var(--accent-glow);
+    
+    .play-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.5);
     }
     
-    @media (max-width: 768px) {
-      .robot-container { width: 180px; height: 240px; bottom: 16%; }
-      .code-block { font-size: 9px; padding: 6px 8px; padding-top: 18px; }
-      .block-1 { top: 10%; left: 2%; }
-      .block-2 { top: 8%; right: 2%; }
-      .block-3 { bottom: 36%; left: 4%; }
-      .block-4 { bottom: 30%; right: 2%; }
-      .logo { font-size: 13px; }
-      h1 { font-size: 16px; }
-      .banner-inner { padding: 12px 20px; gap: 12px; }
-      .wrench { font-size: 16px; }
-      .email-form { flex-direction: column; align-items: center; }
-      .email-input { width: 160px; }
+    /* Story Game Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .modal.active {
+      display: flex;
+    }
+    
+    .story-scene {
+      background: linear-gradient(180deg, #87CEEB 0%, #98D8C8 100%);
+      border-radius: 30px;
+      padding: 30px;
+      max-width: 700px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    
+    .scene-image {
+      font-size: 150px;
+      margin-bottom: 20px;
+      animation: sceneIn 0.5s ease-out;
+    }
+    
+    @keyframes sceneIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    
+    .scene-text {
+      font-size: 22px;
+      color: #2d3436;
+      margin-bottom: 25px;
+      min-height: 60px;
+    }
+    
+    .narrate-btn {
+      display: inline-block;
+      padding: 15px 35px;
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 25px;
+      transition: transform 0.2s;
+    }
+    
+    .narrate-btn:hover {
+      transform: scale(1.1);
+    }
+    
+    .narrate-btn:active {
+      transform: scale(0.95);
+    }
+    
+    .choices {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .choice-btn {
+      background: white;
+      border: 4px solid #4ecdc4;
+      border-radius: 20px;
+      padding: 20px 30px;
+      cursor: pointer;
+      transition: all 0.3s;
+      flex: 1;
+      min-width: 150px;
+      max-width: 200px;
+    }
+    
+    .choice-btn:hover {
+      background: #4ecdc4;
+      transform: scale(1.05);
+    }
+    
+    .choice-btn:active {
+      transform: scale(0.95);
+    }
+    
+    .choice-icon {
+      font-size: 60px;
+      display: block;
+      margin-bottom: 10px;
+    }
+    
+    .choice-text {
+      font-size: 16px;
+      color: #2d3436;
+      font-weight: 700;
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    
+    .close-btn:hover {
+      transform: scale(1.1);
+    }
+    
+    .back-home {
+      display: block;
+      margin-top: 15px;
+      color: #ffeaa7;
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    
+    /* Speaker animation when narrating */
+    .speaking {
+      animation: pulse 0.5s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    
+    /* Sound wave animation */
+    .sound-waves {
+      display: none;
+      justify-content: center;
+      gap: 4px;
+      margin-bottom: 15px;
+    }
+    
+    .sound-waves.active {
+      display: flex;
+    }
+    
+    .wave-bar {
+      width: 8px;
+      height: 30px;
+      background: #ff6b6b;
+      border-radius: 4px;
+      animation: soundWave 0.5s ease-in-out infinite;
+    }
+    
+    .wave-bar:nth-child(2) { animation-delay: 0.1s; }
+    .wave-bar:nth-child(3) { animation-delay: 0.2s; }
+    .wave-bar:nth-child(4) { animation-delay: 0.3s; }
+    
+    @keyframes soundWave {
+      0%, 100% { transform: scaleY(0.3); }
+      50% { transform: scaleY(1); }
+    }
+    
+    @media (max-width: 600px) {
+      .title { font-size: 32px; }
+      .subtitle { font-size: 16px; }
+      .character { font-size: 80px; }
+      .game-icon { font-size: 50px; }
+      .game-title { font-size: 20px; }
+      .scene-image { font-size: 100px; }
+      .scene-text { font-size: 18px; }
+      .choice-btn { padding: 15px 20px; }
+      .choice-icon { font-size: 45px; }
     }
   </style>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="scene">
-    <div class="grid"></div>
-    <div class="logo">ROBOT<span>ARMS</span>.AI</div>
+  <div class="sparkles">
+    <div class="sparkle" style="left: 10%; top: 20%; animation-delay: 0s;">✨</div>
+    <div class="sparkle" style="left: 20%; top: 60%; animation-delay: 1s;">⭐</div>
+    <div class="sparkle" style="left: 80%; top: 30%; animation-delay: 2s;">✨</div>
+    <div class="sparkle" style="left: 70%; top: 70%; animation-delay: 0.5s;">⭐</div>
+    <div class="sparkle" style="left: 50%; top: 15%; animation-delay: 1.5s;">✨</div>
+    <div class="sparkle" style="left: 90%; top: 80%; animation-delay: 2.5s;">⭐</div>
+    <div class="sparkle" style="left: 5%; top: 85%; animation-delay: 3s;">✨</div>
+    <div class="sparkle" style="left: 40%; top: 90%; animation-delay: 0.8s;">⭐</div>
+  </div>
+  
+  <div class="container">
+    <header class="header">
+      <h1 class="title">Odin's Magic Lab</h1>
+      <p class="subtitle">✨ Fun AI Games for Kids ✨</p>
+    </header>
     
-    <div class="code-block block-1">
-      <span class="token keyword">const</span> <span class="token var">arm</span> = <span class="token func">init</span>()
-    </div>
-    <div class="code-block block-2">
-      <span class="token var">arm</span>.<span class="token func">move</span>(<span class="token num">360</span>)
-    </div>
-    <div class="code-block block-3">
-      <span class="token keyword">while</span> (<span class="token var">build</span>) { <span class="token func">run</span>() }
-    </div>
-    <div class="code-block block-4">
-      <span class="token comment">// coming soon</span>
-    </div>
-    
-    <div class="robot-container">
-      <svg class="robot-arm" viewBox="0 0 280 360" xmlns="http://www.w3.org/2000/svg">
-        <!-- Base - FIXED at bottom -->
-        <g id="base">
-          <rect x="80" y="310" width="120" height="45" fill="#2a2a3e" rx="6"/>
-          <rect x="90" y="318" width="100" height="30" fill="#3a3a4e" rx="4"/>
-          <rect x="100" y="323" width="80" height="20" fill="#1a1a2e" rx="2"/>
-          <!-- Indicator lights -->
-          <circle cx="115" cy="333" r="4" fill="#50fa7b">
-            <animate attributeName="opacity" values="1;0.4;1" dur="1.5s" repeatCount="indefinite"/>
-          </circle>
-          <circle cx="140" cy="333" r="4" fill="#6c63ff">
-            <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite"/>
-          </circle>
-          <circle cx="165" cy="333" r="4" fill="#50fa7b">
-            <animate attributeName="opacity" values="1;0.4;1" dur="1.5s" repeatCount="indefinite" begin="0.3s"/>
-          </circle>
-        </g>
-        
-        <!-- Shoulder at (140, 310) - where upper arm rotates -->
-        <g id="shoulder">
-          <circle cx="140" cy="310" r="18" fill="#3a3a4e"/>
-          <circle cx="140" cy="310" r="10" fill="#5a5a6e"/>
-          
-          <!-- Upper arm - rotates around shoulder -->
-          <g id="upperArm">
-            <animateTransform 
-              attributeName="transform" 
-              type="rotate" 
-              values="0 140 310; 30 140 310; 50 140 310; 20 140 310; -20 140 310; 0 140 310"
-              keyTimes="0; 0.15; 0.35; 0.55; 0.75; 1"
-              dur="8s" 
-              repeatCount="indefinite"
-              calcMode="spline"
-              keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1"
-            />
-            
-            <!-- Upper arm segment -->
-            <rect x="132" y="200" width="16" height="115" fill="#4a4a5e" rx="5"/>
-            <rect x="135" y="205" width="10" height="105" fill="#5a5a6e" rx="3"/>
-            
-            <!-- Elbow at (140, 200) - where forearm rotates -->
-            <g id="elbow">
-              <circle cx="140" cy="200" r="15" fill="#3a3a4e"/>
-              <circle cx="140" cy="200" r="9" fill="#5a5a6e"/>
-              
-              <!-- Forearm - rotates around elbow -->
-              <g id="forearm">
-                <animateTransform 
-                  attributeName="transform" 
-                  type="rotate" 
-                  values="-10 140 200; -60 140 200; -80 140 200; -50 140 200; 10 140 200; -10 140 200"
-                  keyTimes="0; 0.15; 0.35; 0.55; 0.75; 1"
-                  dur="8s" 
-                  repeatCount="indefinite"
-                  calcMode="spline"
-                  keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1"
-                />
-                
-                <!-- Forearm segment -->
-                <rect x="132" y="110" width="16" height="95" fill="#4a4a5e" rx="5"/>
-                <rect x="135" y="114" width="10" height="87" fill="#5a5a6e" rx="3"/>
-                
-                <!-- Wrist at (140, 110) - where claw rotates -->
-                <g id="wrist">
-                  <circle cx="140" cy="110" r="12" fill="#3a3a4e"/>
-                  <circle cx="140" cy="110" r="7" fill="#5a5a6e"/>
-                  
-                  <!-- Wrist segment -->
-                  <rect x="132" y="60" width="16" height="55" fill="#4a4a5e" rx="4"/>
-                  <rect x="135" y="63" width="10" height="49" fill="#5a5a6e" rx="2"/>
-                  
-                  <!-- Claw fingers - animate open/close -->
-                  <g id="fingers">
-                    <!-- Left finger -->
-                    <rect x="124" y="35" width="10" height="35" fill="#5a5a6e" rx="4">
-                      <animateTransform 
-                        attributeName="transform" 
-                        type="rotate" 
-                        values="0 129 35; -15 129 35; -15 129 35; 0 129 35; 0 129 35"
-                        keyTimes="0; 0.3; 0.5; 0.7; 1"
-                        dur="8s" 
-                        repeatCount="indefinite"
-                      />
-                    </rect>
-                    <!-- Right finger -->
-                    <rect x="146" y="35" width="10" height="35" fill="#5a5a6e" rx="4">
-                      <animateTransform 
-                        attributeName="transform" 
-                        type="rotate" 
-                        values="0 151 35; 15 151 35; 15 151 35; 0 151 35; 0 151 35"
-                        keyTimes="0; 0.3; 0.5; 0.7; 1"
-                        dur="8s" 
-                        repeatCount="indefinite"
-                      />
-                    </rect>
-                    <!-- Claw tip -->
-                    <rect x="129" y="20" width="22" height="20" fill="#4a4a5e" rx="4"/>
-                    <rect x="131" y="22" width="18" height="16" fill="#5a5a6e" rx="2"/>
-                  </g>
-                </g>
-              </g>
-            </g>
-          </g>
-        </g>
-      </svg>
+    <div class="welcome-character">
+      <span class="character">🧙‍♂️</span>
     </div>
     
-    <div class="banner">
-      <div class="banner-inner">
-        <span class="wrench">🔧</span>
-        <div>
-          <h1>Under Construction</h1>
-          <p class="subtitle">Building the future of robotics</p>
-        </div>
-        <span class="wrench">🔧</span>
+    <div class="games-grid">
+      <!-- Story Adventure -->
+      <div class="game-card" onclick="openStory()">
+        <span class="game-icon">📚</span>
+        <h2 class="game-title">Story Adventure</h2>
+        <p class="game-desc">Click pictures to go on a magical journey!</p>
+        <span class="play-btn">Play!</span>
       </div>
-      <form class="email-form" onsubmit="event.preventDefault(); this.querySelector('.submit-btn').textContent='Sent!'; this.querySelector('.submit-btn').disabled=true;">
-        <input type="email" class="email-input" placeholder="your@email.com" required>
-        <button type="submit" class="submit-btn">Notify Me</button>
-      </form>
+      
+      <!-- Magic 8 Ball -->
+      <div class="game-card" onclick="openMagic8Ball()">
+        <span class="game-icon">🔮</span>
+        <h2 class="game-title">Magic 8 Ball</h2>
+        <p class="game-desc">Ask the magic ball your question!</p>
+        <span class="play-btn">Play!</span>
+      </div>
+      
+      <!-- Fortune Teller -->
+      <div class="game-card" onclick="openFortuneTeller()">
+        <span class="game-icon">🌟</span>
+        <h2 class="game-title">Crystal Ball</h2>
+        <p class="game-desc">See your fortune in the crystal!</p>
+        <span class="play-btn">Play!</span>
+      </div>
     </div>
   </div>
+  
+  <!-- Story Adventure Modal -->
+  <div class="modal" id="storyModal">
+    <button class="close-btn" onclick="closeStory()">✕</button>
+    <div class="story-scene">
+      <div class="sound-waves" id="soundWaves">
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+      </div>
+      <div class="scene-image" id="sceneImage">🏰</div>
+      <p class="scene-text" id="sceneText">You're standing in front of a magical castle!</p>
+      <button class="narrate-btn" id="narrateBtn" onclick="narrateText()">🔊 Listen</button>
+      <div class="choices" id="choices">
+        <!-- Choices will be inserted here -->
+      </div>
+      <a class="back-home" onclick="resetStory()">Start over</a>
+    </div>
+  </div>
+  
+  <!-- Magic 8 Ball Modal -->
+  <div class="modal" id="magic8Modal">
+    <button class="close-btn" onclick="closeMagic8Ball()">✕</button>
+    <div class="story-scene" style="background: linear-gradient(180deg, #2c3e50 0%, #4a69bd 100%);">
+      <div class="scene-image" id="magic8Ball">🎱</div>
+      <p class="scene-text" id="magic8Text" style="color: white;">Think of a question, then shake me!</p>
+      <button class="narrate-btn" style="background: #4ecdc4;" onclick="shakeMagic8Ball()">🖐️ Shake!</button>
+    </div>
+  </div>
+  
+  <!-- Fortune Teller Modal -->
+  <div class="modal" id="fortuneModal">
+    <button class="close-btn" onclick="closeFortuneTeller()">✕</button>
+    <div class="story-scene" style="background: linear-gradient(180deg, #9b59b6 0%, #8e44ad 100%);">
+      <div class="scene-image" id="fortuneCrystal">🔮</div>
+      <p class="scene-text" id="fortuneText" style="color: white;">Gaze into the crystal and discover your fortune!</p>
+      <button class="narrate-btn" style="background: #f39c12;" onclick="revealFortune()">✨ Reveal!</button>
+    </div>
+  </div>
+  
+  <script>
+    // Story data
+    const story = {
+      start: {
+        image: '🏰',
+        text: "You're standing in front of a magical castle! What do you want to do?",
+        choices: [
+          { text: "Go inside", icon: "🚪", next: "inside" },
+          { text: "Explore forest", icon: "🌲", next: "forest" }
+        ]
+      },
+      inside: {
+        image: '🧙‍♂️',
+        text: "A wizard greets you! He offers you a magic trick! What do you choose?",
+        choices: [
+          { text: "See magic trick", icon: "🎩", next: "magic" },
+          { text: "Ask for a pet dragon", icon: "🐉", next: "dragon" }
+        ]
+      },
+      forest: {
+        image: '�🦊',
+        text: "You meet a friendly fox in the forest! He wants to show you something!",
+        choices: [
+          { text: "Follow the fox", icon: "🐾", next: "pond" },
+          { text: "Look for treasure", icon: "💎", next: "treasure" }
+        ]
+      },
+      magic: {
+        image: '🎩',
+        text: "POOF! The wizard makes a bunny appear from his hat! You can keep it!",
+        choices: [
+          { text: "Hug the bunny", icon: "🐰", next: "bunny_hug" },
+          { text: "Name your bunny", icon: "📝", next: "bunny_name" }
+        ]
+      },
+      dragon: {
+        image: '🐉',
+        text: "The wizard waves his wand and a baby dragon appears! It hatches from an egg!",
+        choices: [
+          { text: "Pet the dragon", icon: "🤚", next: "dragon_pet" },
+          { text: "Name your dragon", icon: "📝", next: "dragon_name" }
+        ]
+      },
+      pond: {
+        image: '🦆',
+        text: "The fox shows you a pond with magical ducks that glow! What do you do?",
+        choices: [
+          { text: "Feed the ducks", icon: "🍞", next: "ducks" },
+          { text: "Take a duck home", icon: "🏠", next: "duck_home" }
+        ]
+      },
+      treasure: {
+        image: '💰',
+        text: "You found a treasure chest! Inside is a map to even more treasure!",
+        choices: [
+          { text: "Follow the map", icon: "🗺️", next: "more_treasure" },
+          { text: "Share with the fox", icon: "🤝", next: "friend_fox" }
+        ]
+      },
+      bunny_hug: {
+        image: '💕',
+        text: "The bunny hugs you back! You're now best friends forever! THE END! 🌟",
+        choices: [
+          { text: "Play again!", icon: "🔄", next: "start" }
+        ]
+      },
+      bunny_name: {
+        image: '🐰',
+        text: "You name your bunny Fluffy! You go home together! THE END! 🌟",
+        choices: [
+          { text: "Play again!", icon: "🔄", next: "start" }
+        ]
+      },
+      dragon_pet: {
+        image: '🐲',
+        text: "The dragon purrs like a cat! It loves you! You become best friends! THE END! 🌟",
+        choices: [
+          { text: "Play again!", icon: "🔄", next: "start" }
+        ]
+      },
+      dragon_name: {
+        image: '🐉',
+        text: "You name your dragon Sparky! You fly away together into the sunset! THE END! 🌟",
+        choices: [
+          { text: "Play again!", icon: "🔄", next: "start" }
+        ]
+      },
+      ducks: {
+        image: '🌈',
+        text: "The ducks turn into rainbow colors! They fly you around the world! THE END! 🌈",
+        choices: [
+          { text: "Play again!", icon: "🔄", next: "start" }
+        ]
+      },
+      duck_home: {
+        image: '🏠',
+        text: "You take a magic duck home! It lays golden eggs every day! THE END! 🥚",
+        choices: [
+          { text: "Play again!", icon: "🔄", next: "start" }
+        ]
+      },
+      more_treasure: {
+        image: '👑',
+        text: "The treasure was a king's crown! You become friends with the king! THE END! 👑",
+        choices: [
+          { text: "Play again!", icon: "🔄", next: "start" }
+        ]
+      },
+      friend_fox: {
+        image: '💖',
+        text: "You and the fox become best friends and share all the treasure! THE END! 💖",
+        choices: [
+          { text: "Play again!", icon: "🔄", next: "start" }
+        ]
+      }
+    };
+    
+    let currentNode = 'start';
+    let speechSynthesis = window.speechSynthesis;
+    let currentUtterance = null;
+    
+    function narrateText() {
+      // Cancel any ongoing speech
+      speechSynthesis.cancel();
+      
+      const text = document.getElementById('sceneText').textContent;
+      
+      currentUtterance = new SpeechSynthesisUtterance(text);
+      currentUtterance.rate = 0.85;
+      currentUtterance.pitch = 1.1;
+      
+      // Show sound waves
+      document.getElementById('soundWaves').classList.add('active');
+      document.getElementById('narrateBtn').classList.add('speaking');
+      
+      currentUtterance.onend = function() {
+        document.getElementById('soundWaves').classList.remove('active');
+        document.getElementById('narrateBtn').classList.remove('speaking');
+      };
+      
+      speechSynthesis.speak(currentUtterance);
+    }
+    
+    function showScene(nodeKey) {
+      currentNode = nodeKey;
+      const node = story[nodeKey];
+      
+      // Cancel ongoing speech
+      speechSynthesis.cancel();
+      
+      // Animate scene change
+      const sceneImage = document.getElementById('sceneImage');
+      const sceneText = document.getElementById('sceneText');
+      
+      sceneImage.style.animation = 'none';
+      sceneImage.offsetHeight; // Trigger reflow
+      sceneImage.style.animation = 'sceneIn 0.5s ease-out';
+      
+      sceneImage.textContent = node.image;
+      sceneText.textContent = node.text;
+      
+      // Update choices
+      const choicesDiv = document.getElementById('choices');
+      choicesDiv.innerHTML = '';
+      
+      node.choices.forEach(choice => {
+        const btn = document.createElement('button');
+        btn.className = 'choice-btn';
+        btn.innerHTML = `<span class="choice-icon">${choice.icon}</span><span class="choice-text">${choice.text}</span>`;
+        btn.onclick = () => showScene(choice.next);
+        choicesDiv.appendChild(btn);
+      });
+      
+      // Auto-narrate for young children
+      setTimeout(narrateText, 500);
+    }
+    
+    function resetStory() {
+      showScene('start');
+    }
+    
+    function openStory() {
+      document.getElementById('storyModal').classList.add('active');
+      showScene('start');
+    }
+    
+    function closeStory() {
+      speechSynthesis.cancel();
+      document.getElementById('storyModal').classList.remove('active');
+    }
+    
+    // Magic 8 Ball
+    const magic8Responses = [
+      "Yes! Definitely yes! ✨",
+      "No, I don't think so... 🤔",
+      "Maybe... try again! 🌟",
+      "I see good things coming! 🍀",
+      "Ask again later! ⏰",
+      "YES! Absolutely! 🚀",
+      "My magic says no... 💫",
+      "Very likely! 🌈",
+      "I think so! 👍",
+      "Not looking good... 👀"
+    ];
+    
+    function shakeMagic8Ball() {
+      speechSynthesis.cancel();
+      
+      const ball = document.getElementById('magic8Ball');
+      const text = document.getElementById('magic8Text');
+      
+      // Shake animation
+      ball.style.animation = 'none';
+      ball.offsetHeight;
+      ball.style.animation = 'shake 0.5s ease-in-out';
+      
+      setTimeout(() => {
+        const response = magic8Responses[Math.floor(Math.random() * magic8Responses.length)];
+        text.textContent = response;
+        
+        const utterance = new SpeechSynthesisUtterance(response);
+        utterance.rate = 0.9;
+        utterance.pitch = 1.2;
+        speechSynthesis.speak(utterance);
+      }, 600);
+    }
+    
+    function openMagic8Ball() {
+      document.getElementById('magic8Modal').classList.add('active');
+      document.getElementById('magic8Text').textContent = "Think of a question, then shake me!";
+    }
+    
+    function closeMagic8Ball() {
+      speechSynthesis.cancel();
+      document.getElementById('magic8Modal').classList.remove('active');
+    }
+    
+    // Fortune Teller
+    const fortunes = [
+      "A great adventure is waiting for you! ⚔️",
+      "You will make a new friend soon! 💕",
+      "Something magical will happen today! ✨",
+      "Good luck is coming your way! 🍀",
+      "Someone special is thinking of you! 💭",
+      "A surprise is waiting for you! 🎁",
+      "Today is a lucky day! 🌟",
+      "You will learn something new! 📚",
+      "Happiness is coming your way! ☀️",
+      "A dream will come true! 🌙"
+    ];
+    
+    function revealFortune() {
+      speechSynthesis.cancel();
+      
+      const crystal = document.getElementById('fortuneCrystal');
+      const text = document.getElementById('fortuneText');
+      
+      // Spin animation
+      crystal.style.animation = 'none';
+      crystal.offsetHeight;
+      crystal.style.animation = 'spin 1s ease-in-out';
+      
+      setTimeout(() => {
+        const fortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+        text.textContent = fortune;
+        crystal.textContent = '🌟';
+        
+        const utterance = new SpeechSynthesisUtterance(fortune);
+        utterance.rate = 0.85;
+        utterance.pitch = 1.15;
+        speechSynthesis.speak(utterance);
+      }, 500);
+    }
+    
+    function openFortuneTeller() {
+      document.getElementById('fortuneModal').classList.add('active');
+      document.getElementById('fortuneText').textContent = "Gaze into the crystal and discover your fortune!";
+      document.getElementById('fortuneCrystal').textContent = '🔮';
+    }
+    
+    function closeFortuneTeller() {
+      speechSynthesis.cancel();
+      document.getElementById('fortuneModal').classList.remove('active');
+    }
+    
+    // Add shake animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: rotate(0deg); }
+        25% { transform: rotate(-15deg); }
+        50% { transform: rotate(15deg); }
+        75% { transform: rotate(-10deg); }
+      }
+      @keyframes spin {
+        0% { transform: scale(1) rotate(0deg); }
+        50% { transform: scale(1.2) rotate(180deg); }
+        100% { transform: scale(1) rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // Close modal on outside click
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.remove('active');
+          speechSynthesis.cancel();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
