@@ -61,45 +61,7 @@
         linear-gradient(var(--accent-glow) 1px, transparent 1px),
         linear-gradient(90deg, var(--accent-glow) 1px, transparent 1px);
       background-size: 50px 50px;
-      animation: gridMove 20s linear infinite;
       opacity: 0.3;
-    }
-    
-    @keyframes gridMove {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(50px, 50px); }
-    }
-    
-    /* Floating particles */
-    .particles {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
-    }
-    
-    .particle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: var(--accent);
-      border-radius: 50%;
-      opacity: 0.6;
-      animation: particleFloat 8s ease-in-out infinite;
-    }
-    
-    .particle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; background: var(--token-variable); }
-    .particle:nth-child(2) { left: 20%; top: 80%; animation-delay: 1s; background: var(--token-function); }
-    .particle:nth-child(3) { left: 30%; top: 40%; animation-delay: 2s; background: var(--token-string); }
-    .particle:nth-child(4) { left: 50%; top: 60%; animation-delay: 3s; background: var(--token-number); }
-    .particle:nth-child(5) { left: 70%; top: 30%; animation-delay: 4s; background: var(--token-keyword); }
-    .particle:nth-child(6) { left: 80%; top: 70%; animation-delay: 5s; background: var(--accent2); }
-    .particle:nth-child(7) { left: 90%; top: 50%; animation-delay: 6s; background: var(--token-variable); }
-    .particle:nth-child(8) { left: 15%; top: 55%; animation-delay: 7s; background: var(--token-function); }
-    
-    @keyframes particleFloat {
-      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
-      50% { transform: translate(100px, -50px) scale(1.5); opacity: 0.3; }
     }
     
     /* Code blocks */
@@ -115,13 +77,12 @@
       box-shadow: 0 10px 40px rgba(0,0,0,0.5);
       white-space: nowrap;
       z-index: 10;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
     }
     
-    .code-block:hover {
-      transform: scale(1.05) !important;
-      box-shadow: 0 15px 50px rgba(108, 99, 255, 0.3);
-      z-index: 15;
+    .code-block.grabbed {
+      z-index: 25;
+      box-shadow: 0 20px 60px rgba(108, 99, 255, 0.4);
     }
     
     .code-block::before {
@@ -155,152 +116,60 @@
     .var { color: var(--token-variable); }
     .comment { color: var(--token-comment); font-style: italic; }
     
-    .block-1 {
-      top: 12%;
-      left: 8%;
-      animation: float1 6s ease-in-out infinite;
-    }
+    /* Initial positions - where blocks start */
+    .block-1 { top: 18%; left: 8%; }
+    .block-2 { top: 15%; right: 10%; }
+    .block-3 { bottom: 25%; left: 12%; }
+    .block-4 { bottom: 22%; right: 10%; }
     
-    .block-2 {
-      top: 20%;
-      right: 10%;
-      animation: float2 7s ease-in-out infinite;
-    }
-    
-    .block-3 {
-      bottom: 22%;
-      left: 12%;
-      animation: float3 5s ease-in-out infinite;
-    }
-    
-    .block-4 {
-      bottom: 28%;
-      right: 8%;
-      animation: float1 8s ease-in-out infinite reverse;
-    }
-    
-    @keyframes float1 {
-      0%, 100% { transform: translate(0, 0) rotate(-2deg); }
-      50% { transform: translate(20px, -30px) rotate(2deg); }
-    }
-    
-    @keyframes float2 {
-      0%, 100% { transform: translate(0, 0) rotate(3deg); }
-      50% { transform: translate(-25px, -20px) rotate(-2deg); }
-    }
-    
-    @keyframes float3 {
-      0%, 100% { transform: translate(0, 0) rotate(-1deg); }
-      50% { transform: translate(15px, -25px) rotate(3deg); }
-    }
-    
-    /* Robot Arm */
-    .robot-arm {
+    /* Robot Arm Container */
+    .robot-container {
+      position: relative;
       width: 450px;
-      height: 350px;
+      height: 400px;
       z-index: 5;
-      filter: drop-shadow(0 0 20px var(--accent-glow));
     }
     
-    .arm-base {
-      animation: basePulse 3s ease-in-out infinite;
+    .robot-arm {
+      width: 100%;
+      height: 100%;
     }
     
-    @keyframes basePulse {
-      0%, 100% { filter: brightness(1); }
-      50% { filter: brightness(1.2); }
-    }
-    
-    .arm-segment-1 {
-      transform-origin: 200px 190px;
-      animation: armSwing1 3s ease-in-out infinite;
-    }
-    
-    .arm-segment-2 {
-      transform-origin: 200px 95px;
-      animation: armSwing2 3s ease-in-out infinite 0.5s;
-    }
-    
-    .arm-segment-3 {
-      transform-origin: 200px 50px;
-      animation: armSwing3 3s ease-in-out infinite 1s;
-    }
-    
-    .claw {
-      transform-origin: 200px 50px;
-      animation: clawMove 3s ease-in-out infinite;
-    }
-    
-    .finger-left {
-      transform-origin: 188px 35px;
-      animation: fingerClose 3s ease-in-out infinite;
-    }
-    
-    .finger-right {
-      transform-origin: 212px 35px;
-      animation: fingerClose 3s ease-in-out infinite reverse;
-    }
-    
-    .joint {
-      animation: jointGlow 3s ease-in-out infinite;
-    }
-    
-    @keyframes basePulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.8; }
-    }
-    
-    @keyframes armSwing1 {
-      0%, 100% { transform: rotate(-12deg); }
-      50% { transform: rotate(12deg); }
-    }
-    
-    @keyframes armSwing2 {
-      0%, 100% { transform: rotate(15deg); }
-      50% { transform: rotate(-20deg); }
-    }
-    
-    @keyframes armSwing3 {
-      0%, 100% { transform: rotate(-8deg); }
-      50% { transform: rotate(8deg); }
-    }
-    
-    @keyframes clawMove {
-      0%, 100% { transform: translate(40px, -20px) rotate(-15deg); }
-      33% { transform: translate(-30px, -60px) rotate(20deg); }
-      66% { transform: translate(-60px, 20px) rotate(-10deg); }
-    }
-    
-    @keyframes fingerClose {
-      0%, 40%, 60%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(-12deg); }
-    }
-    
-    @keyframes jointGlow {
-      0%, 100% { fill: #6a6a7e; }
-      50% { fill: #8a8a9e; }
-    }
-    
-    /* Glow line following gripper */
-    .glow-trace {
+    /* Gripper that follows claw */
+    .gripper {
       position: absolute;
-      top: calc(50% - 80px);
-      left: calc(50% + 130px);
-      width: 80px;
-      height: 80px;
-      border: 2px solid var(--accent);
-      border-radius: 50%;
-      opacity: 0;
-      animation: glowPulse 3s ease-in-out infinite;
+      width: 60px;
+      height: 50px;
+      z-index: 20;
       pointer-events: none;
+      opacity: 0;
     }
     
-    @keyframes glowPulse {
-      0%, 100% { transform: translate(40px, -20px) scale(0.5); opacity: 0; }
-      25% { transform: translate(-30px, -60px) scale(1); opacity: 0.8; }
-      50% { transform: translate(-60px, 20px) scale(0.8); opacity: 0.4; }
-      75% { transform: translate(20px, 30px) scale(1.2); opacity: 0.6; }
+    .gripper.active {
+      opacity: 1;
     }
+    
+    .gripper-left, .gripper-right {
+      position: absolute;
+      width: 10px;
+      height: 35px;
+      background: linear-gradient(180deg, #6a6a7e, #4a4a5e);
+      border-radius: 3px;
+      top: 10px;
+    }
+    
+    .gripper-left {
+      left: 8px;
+      transform-origin: top center;
+    }
+    
+    .gripper-right {
+      right: 8px;
+      transform-origin: top center;
+    }
+    
+    .gripper-left.closed { transform: rotate(15deg); }
+    .gripper-right.closed { transform: rotate(-15deg); }
     
     /* Banner */
     .banner {
@@ -326,12 +195,6 @@
       box-shadow: 
         0 0 30px var(--accent-glow),
         inset 0 0 30px rgba(108, 99, 255, 0.1);
-      animation: bannerPulse 3s ease-in-out infinite;
-    }
-    
-    @keyframes bannerPulse {
-      0%, 100% { box-shadow: 0 0 30px var(--accent-glow), inset 0 0 30px rgba(108, 99, 255, 0.1); }
-      50% { box-shadow: 0 0 50px var(--accent-glow), inset 0 0 40px rgba(108, 99, 255, 0.15); }
     }
     
     .wrench {
@@ -365,7 +228,7 @@
       letter-spacing: 1px;
     }
     
-    /* Email signup form */
+    /* Email signup */
     .email-form {
       display: flex;
       gap: 10px;
@@ -385,10 +248,7 @@
       transition: border-color 0.3s, box-shadow 0.3s;
     }
     
-    .email-input::placeholder {
-      color: var(--text-dim);
-    }
-    
+    .email-input::placeholder { color: var(--text-dim); }
     .email-input:focus {
       border-color: var(--accent);
       box-shadow: 0 0 15px var(--accent-glow);
@@ -412,30 +272,18 @@
       box-shadow: 0 5px 20px var(--accent-glow);
     }
     
-    .submit-btn:active {
-      transform: scale(0.98);
-    }
-    
-    .form-message {
-      font-size: 12px;
-      margin-top: 8px;
-      height: 16px;
-    }
-    
-    .form-message.success { color: var(--token-variable); }
-    .form-message.error { color: var(--token-keyword); }
-    
-    /* Logo text */
+    /* Logo */
     .logo-text {
       position: absolute;
-      top: 5%;
+      top: 4%;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 700;
-      letter-spacing: 4px;
+      letter-spacing: 3px;
       color: var(--text);
-      opacity: 0.8;
+      opacity: 0.7;
+      z-index: 30;
     }
     
     .logo-text span {
@@ -447,143 +295,104 @@
     
     /* Responsive */
     @media (max-width: 768px) {
-      .robot-arm { width: 300px; height: 230px; }
+      .robot-container { width: 300px; height: 280px; }
       .code-block { font-size: 10px; padding: 8px 12px; padding-top: 24px; }
-      .block-1 { top: 8%; left: 3%; }
-      .block-2 { top: 12%; right: 3%; }
+      .block-1 { top: 12%; left: 3%; }
+      .block-2 { top: 10%; right: 3%; }
       .block-3 { bottom: 28%; left: 3%; }
-      .block-4 { bottom: 32%; right: 3%; }
+      .block-4 { bottom: 24%; right: 3%; }
       h1 { font-size: 20px; }
       .banner-inner { padding: 15px 20px; gap: 12px; }
-      .logo-text { font-size: 14px; top: 3%; }
+      .logo-text { font-size: 14px; }
       .email-form { flex-direction: column; }
       .email-input { width: 100%; }
-      .glow-trace { display: none; }
     }
   </style>
 </head>
 <body>
   <div class="scene">
-    <!-- Background Grid -->
     <div class="grid"></div>
-    
-    <!-- Floating Particles -->
-    <div class="particles">
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-    </div>
-    
-    <!-- Logo -->
     <div class="logo-text">ROBOT<span>ARMS</span>.AI</div>
     
-    <!-- Floating Code Blocks -->
-    <div class="code-block block-1">
-      <span class="token keyword">const</span> <span class="token var">robot</span> = <span class="token string">"ready"</span>
+    <!-- Code blocks -->
+    <div class="code-block block-1" id="block1">
+      <span class="token keyword">const</span> <span class="token var">arm</span> = <span class="token func">createRobot</span>()
     </div>
-    <div class="code-block block-2">
-      <span class="token func">arm.move</span>(<span class="token num">360</span>)
+    <div class="code-block block-2" id="block2">
+      <span class="token var">arm</span>.<span class="token func">moveTo</span>(<span class="token num">x</span>, <span class="token num">y</span>)
     </div>
-    <div class="code-block block-3">
-      <span class="token keyword">if</span> (<span class="token var">optimize</span>) { <span class="token func">run</span>() }
+    <div class="code-block block-3" id="block3">
+      <span class="token keyword">while</span> (<span class="token var">building</span>) { <span class="token func">run</span>() }
     </div>
-    <div class="code-block block-4">
-      <span class="token comment">// coming soon</span>
+    <div class="code-block block-4" id="block4">
+      <span class="token comment">// Deploy: robotarms.ai</span>
     </div>
     
-    <!-- Robot Arm SVG - 3 segments now -->
-    <svg class="robot-arm" viewBox="0 0 400 350" xmlns="http://www.w3.org/2000/svg">
-      <!-- Glow effect -->
-      <defs>
-        <radialGradient id="jointGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#6c63ff" stop-opacity="0.6"/>
-          <stop offset="100%" stop-color="#6c63ff" stop-opacity="0"/>
-        </radialGradient>
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-          <feMerge>
-            <feMergeNode in="coloredBlur"/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
-      </defs>
-      
-      <!-- Base -->
-      <g class="arm-base">
-        <rect x="170" y="280" width="60" height="50" fill="#2a2a3e" rx="8"/>
-        <rect x="178" y="288" width="44" height="34" fill="#3a3a4e" rx="5"/>
-        <rect x="185" y="295" width="30" height="20" fill="#1a1a2e" rx="3"/>
+    <!-- Robot Arm -->
+    <div class="robot-container" id="robotContainer">
+      <svg class="robot-arm" viewBox="0 0 450 400" xmlns="http://www.w3.org/2000/svg">
+        <!-- Base -->
+        <rect x="175" y="340" width="100" height="50" fill="#2a2a3e" rx="8"/>
+        <rect x="185" y="350" width="80" height="30" fill="#3a3a4e" rx="5"/>
         <!-- Indicator lights -->
-        <circle cx="192" cy="305" r="3" fill="#50fa7b" class="joint"/>
-        <circle cx="200" cy="305" r="3" fill="#6c63ff" class="joint"/>
-        <circle cx="208" cy="305" r="3" fill="#50fa7b" class="joint"/>
-      </g>
-      
-      <!-- Arm Segment 1 -->
-      <g class="arm-segment-1">
-        <rect x="188" y="200" width="24" height="85" fill="#4a4a5e" rx="5"/>
-        <rect x="192" y="205" width="16" height="75" fill="#5a5a6e" rx="3"/>
-        <!-- Detail lines -->
-        <rect x="195" y="215" width="10" height="2" fill="#6a6a7e"/>
-        <rect x="195" y="235" width="10" height="2" fill="#6a6a7e"/>
-        <rect x="195" y="255" width="10" height="2" fill="#6a6a7e"/>
-      </g>
-      
-      <!-- Joint 1 -->
-      <circle cx="200" cy="200" r="16" fill="#3a3a4e"/>
-      <circle cx="200" cy="200" r="10" fill="url(#jointGlow)" filter="url(#glow)"/>
-      <circle cx="200" cy="200" r="8" fill="#6a6a7e" class="joint"/>
-      
-      <!-- Arm Segment 2 -->
-      <g class="arm-segment-2">
-        <rect x="188" y="105" width="24" height="95" fill="#4a4a5e" rx="5"/>
-        <rect x="192" y="110" width="16" height="85" fill="#5a5a6e" rx="3"/>
-        <!-- Detail lines -->
-        <rect x="195" y="125" width="10" height="2" fill="#6a6a7e"/>
-        <rect x="195" y="150" width="10" height="2" fill="#6a6a7e"/>
-        <rect x="195" y="175" width="10" height="2" fill="#6a6a7e"/>
-      </g>
-      
-      <!-- Joint 2 -->
-      <circle cx="200" cy="105" r="14" fill="#3a3a4e"/>
-      <circle cx="200" cy="105" r="8" fill="url(#jointGlow)" filter="url(#glow)"/>
-      <circle cx="200" cy="105" r="6" fill="#6a6a7e" class="joint"/>
-      
-      <!-- Arm Segment 3 -->
-      <g class="arm-segment-3">
-        <rect x="188" y="55" width="24" height="55" fill="#4a4a5e" rx="5"/>
-        <rect x="192" y="60" width="16" height="45" fill="#5a5a6e" rx="3"/>
-      </g>
-      
-      <!-- Joint 3 -->
-      <circle cx="200" cy="55" r="12" fill="#3a3a4e"/>
-      <circle cx="200" cy="55" r="6" fill="url(#jointGlow)" filter="url(#glow)"/>
-      <circle cx="200" cy="55" r="5" fill="#6a6a7e" class="joint"/>
-      
-      <!-- Wrist/Claw -->
-      <g class="claw">
-        <rect x="182" y="25" width="36" height="35" fill="#4a4a5e" rx="6"/>
-        <rect x="186" y="30" width="28" height="25" fill="#5a5a6e" rx="4"/>
-        <g class="finger finger-left">
-          <rect x="178" y="18" width="10" height="40" fill="#5a5a6e" rx="4"/>
-          <rect x="180" y="22" width="6" height="32" fill="#6a6a7e" rx="2"/>
+        <circle cx="205" cy="365" r="4" fill="#50fa7b" id="light1"/>
+        <circle cx="225" cy="365" r="4" fill="#6c63ff" id="light2"/>
+        <circle cx="245" cy="365" r="4" fill="#50fa7b" id="light3"/>
+        
+        <!-- Arm group - this rotates the whole arm from base -->
+        <g id="armGroup" style="transform-origin: 225px 340px;">
+          <!-- Segment 1 (upper arm) -->
+          <g id="seg1">
+            <rect x="215" y="220" width="20" height="120" fill="#4a4a5e" rx="6"/>
+            <rect x="218" y="225" width="14" height="110" fill="#5a5a6e" rx="4"/>
+            <!-- Joint 1 -->
+            <circle cx="225" cy="220" r="18" fill="#3a3a4e"/>
+            <circle cx="225" cy="220" r="12" fill="#5a5a6e"/>
+            <circle cx="225" cy="220" r="6" fill="#6a6a7e"/>
+          </g>
+          
+          <!-- Segment 2 (forearm) - rotates relative to joint 1 -->
+          <g id="seg2" style="transform-origin: 225px 220px;">
+            <rect x="215" y="100" width="20" height="120" fill="#4a4a5e" rx="6"/>
+            <rect x="218" y="105" width="14" height="110" fill="#5a5a6e" rx="4"/>
+            <!-- Joint 2 -->
+            <circle cx="225" cy="100" r="15" fill="#3a3a4e"/>
+            <circle cx="225" cy="100" r="9" fill="#5a5a6e"/>
+            <circle cx="225" cy="100" r="5" fill="#6a6a7e"/>
+            
+            <!-- Segment 3 (wrist) -->
+            <g id="seg3" style="transform-origin: 225px 100px;">
+              <rect x="215" y="55" width="20" height="50" fill="#4a4a5e" rx="5"/>
+              <rect x="218" y="58" width="14" height="44" fill="#5a5a6e" rx="3"/>
+              <!-- Joint 3 (wrist) -->
+              <circle cx="225" cy="55" r="12" fill="#3a3a4e"/>
+              <circle cx="225" cy="55" r="7" fill="#5a5a6e"/>
+              
+              <!-- Claw base -->
+              <rect x="210" y="25" width="30" height="35" fill="#4a4a5e" rx="5"/>
+              
+              <!-- Claw fingers -->
+              <g id="fingerLeft" style="transform-origin: 215px 25px;">
+                <rect x="205" y="10" width="10" height="40" fill="#5a5a6e" rx="4"/>
+                <rect x="207" y="14" width="6" height="32" fill="#6a6a7e" rx="2"/>
+              </g>
+              <g id="fingerRight" style="transform-origin: 235px 25px;">
+                <rect x="235" y="10" width="10" height="40" fill="#5a5a6e" rx="4"/>
+                <rect x="237" y="14" width="6" height="32" fill="#6a6a7e" rx="2"/>
+              </g>
+            </g>
+          </g>
         </g>
-        <g class="finger finger-right">
-          <rect x="212" y="18" width="10" height="40" fill="#5a5a6e" rx="4"/>
-          <rect x="214" y="22" width="6" height="32" fill="#6a6a7e" rx="2"/>
-        </g>
-      </g>
-    </svg>
+      </svg>
+      
+      <!-- Visual gripper overlay -->
+      <div class="gripper" id="gripper">
+        <div class="gripper-left" id="gripperLeft"></div>
+        <div class="gripper-right" id="gripperRight"></div>
+      </div>
+    </div>
     
-    <!-- Glow trace following gripper -->
-    <div class="glow-trace"></div>
-    
-    <!-- Under Construction Banner -->
+    <!-- Banner -->
     <div class="banner">
       <div class="banner-inner">
         <span class="wrench">🔧</span>
@@ -593,38 +402,285 @@
         </div>
         <span class="wrench">🔧</span>
       </div>
-      <form class="email-form" id="notifyForm">
+      <form class="email-form" onsubmit="event.preventDefault(); this.querySelector('.submit-btn').textContent='Thanks!'; this.querySelector('.submit-btn').disabled=true;">
         <input type="email" class="email-input" placeholder="your@email.com" required>
         <button type="submit" class="submit-btn">Notify Me</button>
       </form>
-      <div class="form-message" id="formMessage"></div>
     </div>
-    
-    <script>
-      document.getElementById('notifyForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const input = this.querySelector('.email-input');
-        const message = document.getElementById('formMessage');
-        const btn = this.querySelector('.submit-btn');
-        
-        // Simulate submission
-        btn.textContent = 'Sending...';
-        btn.disabled = true;
-        
-        setTimeout(() => {
-          message.textContent = 'Thanks! We\'ll keep you posted.';
-          message.className = 'form-message success';
-          input.value = '';
-          btn.textContent = 'Notify Me';
-          btn.disabled = false;
-          
-          // Clear message after 4 seconds
-          setTimeout(() => {
-            message.textContent = '';
-          }, 4000);
-        }, 1000);
-      });
-    </script>
   </div>
+  
+  <script>
+    // Robot arm controller
+    class RobotArm {
+      constructor() {
+        this.armGroup = document.getElementById('armGroup');
+        this.seg1 = document.getElementById('seg1');
+        this.seg2 = document.getElementById('seg2');
+        this.seg3 = document.getElementById('seg3');
+        this.fingerLeft = document.getElementById('fingerLeft');
+        this.fingerRight = document.getElementById('fingerRight');
+        this.gripper = document.getElementById('gripper');
+        this.gripperLeft = document.getElementById('gripperLeft');
+        this.gripperRight = document.getElementById('gripperRight');
+        this.container = document.getElementById('robotContainer');
+        this.blocks = [
+          document.getElementById('block1'),
+          document.getElementById('block2'),
+          document.getElementById('block3'),
+          document.getElementById('block4')
+        ];
+        
+        // Animation state
+        this.heldBlock = null;
+        this.animationDuration = 2000; // ms for each major movement
+        
+        // Joint angles (degrees)
+        this.armAngle = 0;    // Whole arm rotation
+        this.seg1Angle = 0;   // Upper arm
+        this.seg2Angle = 0;   // Forearm  
+        this.seg3Angle = 0;   // Wrist
+        
+        // Claw state
+        this.clawOpen = true;
+      }
+      
+      // Convert block position to joint angles (inverse kinematics simplified)
+      calculateAngles(targetX, targetY) {
+        // Normalize target to container coordinates
+        const rect = this.container.getBoundingClientRect();
+        const centerX = 225; // Arm base X in SVG
+        const centerY = 340; // Arm base Y in SVG
+        
+        // Calculate relative position
+        const relX = targetX - rect.left - centerX;
+        const relY = centerY - (targetY - rect.top);
+        
+        // Distance from base
+        const distance = Math.sqrt(relX * relX + relY * relY);
+        
+        // Clamp to reachable area
+        const maxReach = 280;
+        const minReach = 60;
+        const clampedDist = Math.min(maxReach, Math.max(minReach, distance));
+        
+        // Base rotation angle
+        this.armAngle = Math.atan2(relX, relY) * (180 / Math.PI);
+        
+        // Simplified 2-link arm angles
+        // Assuming upper arm length ~120, forearm ~100, wrist ~50
+        const upperArm = 100;
+        const forearm = 90;
+        
+        // Elevation angle
+        const elevation = Math.asin(Math.max(-1, Math.min(1, relY / distance))) * (180 / Math.PI);
+        
+        // Use law of cosines for elbow angle
+        const cosElbow = (upperArm * upperArm + forearm * forearm - clampedDist * clampedDist) / (2 * upperArm * forearm);
+        const elbowAngle = Math.acos(Math.max(-1, Math.min(1, cosElbow))) * (180 / Math.PI);
+        
+        // Shoulder angle
+        const cosShoulder = (clampedDist * clampedDist + upperArm * upperArm - forearm * forearm) / (2 * clampedDist * upperArm);
+        const shoulderAngle = Math.acos(Math.max(-1, Math.min(1, cosShoulder))) * (180 / Math.PI);
+        
+        this.seg1Angle = elevation + shoulderAngle - 90;
+        this.seg2Angle = 180 - elbowAngle;
+        this.seg3Angle = -this.seg1Angle - this.seg2Angle + 30;
+        
+        return { x: relX, y: relY, distance: clampedDist };
+      }
+      
+      openClaw() {
+        this.clawOpen = true;
+        this.fingerLeft.style.transform = 'rotate(0deg)';
+        this.fingerRight.style.transform = 'rotate(0deg)';
+        this.gripperLeft.classList.remove('closed');
+        this.gripperRight.classList.remove('closed');
+      }
+      
+      closeClaw() {
+        this.clawOpen = false;
+        this.fingerLeft.style.transform = 'rotate(-15deg)';
+        this.fingerRight.style.transform = 'rotate(15deg)';
+        this.gripperLeft.classList.add('closed');
+        this.gripperRight.classList.add('closed');
+      }
+      
+      grabBlock(block) {
+        if (this.heldBlock) return;
+        this.heldBlock = block;
+        block.classList.add('grabbed');
+        this.closeClaw();
+      }
+      
+      releaseBlock() {
+        if (!this.heldBlock) return;
+        this.heldBlock.classList.remove('grabbed');
+        this.heldBlock = null;
+        this.openClaw();
+      }
+      
+      // Update gripper visual position
+      updateGripperPosition() {
+        const rect = this.container.getBoundingClientRect();
+        const svg = this.container.querySelector('svg');
+        const svgRect = svg.getBoundingClientRect();
+        
+        // Calculate where the claw is in screen coordinates
+        // This is approximate since SVG transforms are complex
+        const clawX = svgRect.left + 225 + 40; // Approximate claw position
+        const clawY = svgRect.top + 60;
+        
+        this.gripper.style.left = (clawX - rect.left - 30) + 'px';
+        this.gripper.style.top = (clawY - rect.top) + 'px';
+        
+        if (this.heldBlock) {
+          // Move held block to gripper position
+          this.heldBlock.style.left = (clawX - rect.left - 40) + 'px';
+          this.heldBlock.style.top = (clawY - rect.top + 50) + 'px';
+        }
+      }
+      
+      // Animate to position
+      async animateTo(x, y, duration = this.animationDuration) {
+        const target = this.calculateAngles(x, y);
+        
+        return new Promise(resolve => {
+          const startTime = performance.now();
+          const startArmAngle = this.armAngle;
+          const startSeg1Angle = this.seg1Angle;
+          const startSeg2Angle = this.seg2Angle;
+          const startSeg3Angle = this.seg3Angle;
+          
+          const animate = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            // Ease in-out
+            const eased = progress < 0.5 
+              ? 2 * progress * progress 
+              : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+            
+            // Interpolate angles
+            const currentArm = startArmAngle + (this.armAngle - startArmAngle) * eased;
+            const currentSeg1 = startSeg1Angle + (this.seg1Angle - startSeg1Angle) * eased;
+            const currentSeg2 = startSeg2Angle + (this.seg2Angle - startSeg2Angle) * eased;
+            const currentSeg3 = startSeg3Angle + (this.seg3Angle - startSeg3Angle) * eased;
+            
+            // Apply transforms
+            this.armGroup.style.transform = `rotate(${currentArm}deg)`;
+            this.seg1.style.transform = `rotate(${currentSeg1}deg)`;
+            this.seg2.style.transform = `rotate(${currentSeg2}deg)`;
+            this.seg3.style.transform = `rotate(${currentSeg3}deg)`;
+            
+            this.updateGripperPosition();
+            
+            if (progress < 1) {
+              requestAnimationFrame(animate);
+            } else {
+              resolve();
+            }
+          };
+          
+          requestAnimationFrame(animate);
+        });
+      }
+      
+      // Blink lights
+      blinkLights() {
+        const lights = ['light1', 'light2', 'light3'].map(id => document.getElementById(id));
+        let state = false;
+        setInterval(() => {
+          lights.forEach((light, i) => {
+            light.setAttribute('fill', state ? '#50fa7b' : '#6c63ff');
+            setTimeout(() => {
+              light.setAttribute('fill', '#50fa7b');
+            }, 100);
+          });
+          state = !state;
+        }, 500);
+      }
+      
+      // Main animation sequence
+      async runSequence() {
+        const container = this.container;
+        const rect = container.getBoundingClientRect();
+        
+        // Sequence: grab block 1, move it, release, grab block 2, etc.
+        const sequence = [
+          { block: 0, targetX: rect.left + rect.width * 0.5, targetY: rect.top + 150 },
+          null, // release
+          { block: 1, targetX: rect.left + rect.width * 0.5, targetY: rect.top + 120 },
+          null,
+          { block: 2, targetX: rect.left + rect.width * 0.5, targetY: rect.top + 180 },
+          null,
+          { block: 3, targetX: rect.left + rect.width * 0.5, targetY: rect.top + 140 },
+          null,
+        ];
+        
+        while (true) {
+          for (const step of sequence) {
+            if (step === null) {
+              // Release and pause
+              this.releaseBlock();
+              await this.sleep(800);
+            } else {
+              // Move to block's current position first
+              const block = this.blocks[step.block];
+              const blockRect = block.getBoundingClientRect();
+              
+              // Move arm to hover over block
+              await this.animateTo(blockRect.left + blockRect.width/2, blockRect.top + blockRect.height/2, 1500);
+              await this.sleep(300);
+              
+              // Grab
+              this.grabBlock(block);
+              await this.sleep(300);
+              
+              // Move to target position
+              await this.animateTo(step.targetX, step.targetY, 2000);
+              await this.sleep(300);
+              
+              // Release
+              this.releaseBlock();
+              await this.sleep(500);
+            }
+          }
+          
+          // Return arm to rest position
+          await this.animateTo(rect.left + rect.width * 0.35, rect.top + 250, 1500);
+          await this.sleep(1000);
+        }
+      }
+      
+      sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+      
+      start() {
+        this.blinkLights();
+        
+        // Start arm at rest position
+        const rect = this.container.getBoundingClientRect();
+        this.animateTo(rect.left + rect.width * 0.35, rect.top + 250, 1000);
+        
+        // Small idle animation
+        setInterval(() => {
+          if (!this.heldBlock) {
+            this.seg2Angle += Math.sin(Date.now() / 1000) * 2;
+            this.seg2.style.transform = `rotate(${this.seg2Angle}deg)`;
+          }
+        }, 50);
+        
+        // Start main sequence after delay
+        setTimeout(() => this.runSequence(), 2000);
+      }
+    }
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      const robot = new RobotArm();
+      robot.start();
+    });
+  </script>
 </body>
 </html>
