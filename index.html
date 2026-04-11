@@ -16,7 +16,6 @@
       overflow-x: hidden;
     }
     
-    /* Floating sparkles background */
     .sparkles {
       position: fixed;
       inset: 0;
@@ -37,7 +36,6 @@
       50% { transform: translateY(-20px) rotate(180deg); }
     }
     
-    /* Main container */
     .container {
       position: relative;
       z-index: 1;
@@ -47,7 +45,6 @@
       min-height: 100vh;
     }
     
-    /* Header */
     .header {
       text-align: center;
       padding: 30px 20px;
@@ -73,7 +70,6 @@
       text-shadow: 2px 2px 0 #5a4a9e;
     }
     
-    /* Welcome character */
     .welcome-character {
       text-align: center;
       margin: 20px 0;
@@ -90,7 +86,6 @@
       50% { transform: rotate(5deg); }
     }
     
-    /* Game cards */
     .games-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -118,23 +113,9 @@
     .game-card:nth-child(2) { border-color: #4ecdc4; }
     .game-card:nth-child(3) { border-color: #ffe66d; }
     
-    .game-icon {
-      font-size: 70px;
-      margin-bottom: 15px;
-      display: block;
-    }
-    
-    .game-title {
-      font-size: 24px;
-      font-weight: 900;
-      color: #2d3436;
-      margin-bottom: 8px;
-    }
-    
-    .game-desc {
-      font-size: 16px;
-      color: #636e72;
-    }
+    .game-icon { font-size: 70px; margin-bottom: 15px; display: block; }
+    .game-title { font-size: 24px; font-weight: 900; color: #2d3436; margin-bottom: 8px; }
+    .game-desc { font-size: 16px; color: #636e72; }
     
     .play-btn {
       display: inline-block;
@@ -154,7 +135,7 @@
       box-shadow: 0 5px 20px rgba(102, 126, 234, 0.5);
     }
     
-    /* Story Game Modal */
+    /* Modal styles */
     .modal {
       display: none;
       position: fixed;
@@ -166,23 +147,23 @@
       padding: 20px;
     }
     
-    .modal.active {
-      display: flex;
-    }
+    .modal.active { display: flex; }
     
     .story-scene {
       background: linear-gradient(180deg, #87CEEB 0%, #98D8C8 100%);
       border-radius: 30px;
       padding: 30px;
-      max-width: 700px;
+      max-width: 750px;
       width: 100%;
       text-align: center;
       box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      max-height: 95vh;
+      overflow-y: auto;
     }
     
     .scene-image {
-      font-size: 150px;
-      margin-bottom: 20px;
+      font-size: 120px;
+      margin-bottom: 15px;
       animation: sceneIn 0.5s ease-out;
     }
     
@@ -192,113 +173,48 @@
     }
     
     .scene-text {
-      font-size: 22px;
+      font-size: 20px;
       color: #2d3436;
-      margin-bottom: 25px;
-      min-height: 60px;
+      margin-bottom: 20px;
+      min-height: 50px;
+      line-height: 1.4;
+    }
+    
+    .narrate-controls {
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
     }
     
     .narrate-btn {
-      display: inline-block;
-      padding: 15px 35px;
+      padding: 12px 25px;
       background: #ff6b6b;
       color: white;
       border: none;
       border-radius: 50px;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 700;
       cursor: pointer;
-      margin-bottom: 25px;
       transition: transform 0.2s;
     }
     
-    .narrate-btn:hover {
-      transform: scale(1.1);
-    }
+    .narrate-btn:hover { transform: scale(1.05); }
+    .narrate-btn:active { transform: scale(0.95); }
     
-    .narrate-btn:active {
-      transform: scale(0.95);
-    }
-    
-    .choices {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    
-    .choice-btn {
+    .voice-select {
+      padding: 10px 15px;
+      border-radius: 25px;
+      border: 3px solid #764ba2;
       background: white;
-      border: 4px solid #4ecdc4;
-      border-radius: 20px;
-      padding: 20px 30px;
+      font-size: 14px;
+      font-family: inherit;
       cursor: pointer;
-      transition: all 0.3s;
-      flex: 1;
-      min-width: 150px;
       max-width: 200px;
     }
     
-    .choice-btn:hover {
-      background: #4ecdc4;
-      transform: scale(1.05);
-    }
-    
-    .choice-btn:active {
-      transform: scale(0.95);
-    }
-    
-    .choice-icon {
-      font-size: 60px;
-      display: block;
-      margin-bottom: 10px;
-    }
-    
-    .choice-text {
-      font-size: 16px;
-      color: #2d3436;
-      font-weight: 700;
-    }
-    
-    .close-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: #ff6b6b;
-      color: white;
-      border: none;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      font-size: 24px;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-    
-    .close-btn:hover {
-      transform: scale(1.1);
-    }
-    
-    .back-home {
-      display: block;
-      margin-top: 15px;
-      color: #ffeaa7;
-      text-decoration: underline;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    
-    /* Speaker animation when narrating */
-    .speaking {
-      animation: pulse 0.5s ease-in-out infinite;
-    }
-    
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-    }
-    
-    /* Sound wave animation */
     .sound-waves {
       display: none;
       justify-content: center;
@@ -306,9 +222,7 @@
       margin-bottom: 15px;
     }
     
-    .sound-waves.active {
-      display: flex;
-    }
+    .sound-waves.active { display: flex; }
     
     .wave-bar {
       width: 8px;
@@ -327,16 +241,113 @@
       50% { transform: scaleY(1); }
     }
     
+    .choices {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+    
+    .choice-btn {
+      background: white;
+      border: 4px solid #4ecdc4;
+      border-radius: 20px;
+      padding: 15px 25px;
+      cursor: pointer;
+      transition: all 0.3s;
+      flex: 1;
+      min-width: 140px;
+      max-width: 180px;
+    }
+    
+    .choice-btn:hover {
+      background: #4ecdc4;
+      transform: scale(1.05);
+    }
+    
+    .choice-btn:active { transform: scale(0.95); }
+    
+    .choice-icon { font-size: 50px; display: block; margin-bottom: 8px; }
+    .choice-text { font-size: 15px; color: #2d3436; font-weight: 700; }
+    
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      font-size: 22px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    
+    .close-btn:hover { transform: scale(1.1); }
+    
+    .back-home {
+      display: inline-block;
+      margin-top: 10px;
+      color: #ffeaa7;
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 15px;
+      background: rgba(0,0,0,0.2);
+      padding: 8px 16px;
+      border-radius: 20px;
+    }
+    
+    .speaking { animation: pulse 0.5s ease-in-out infinite; }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    
+    /* Progress indicator */
+    .progress {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    
+    .progress-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+    }
+    
+    .progress-dot.active { background: #ffe66d; }
+    
+    /* Ending celebration */
+    .ending-text {
+      font-size: 24px;
+      font-weight: 900;
+      color: #764ba2;
+      margin-bottom: 15px;
+    }
+    
+    /* Magic 8 Ball specific */
+    .magic8-scene { background: linear-gradient(180deg, #2c3e50 0%, #4a69bd 100%); }
+    .fortune-scene { background: linear-gradient(180deg, #9b59b6 0%, #8e44ad 100%); }
+    
+    .scene-text.light { color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
+    
     @media (max-width: 600px) {
       .title { font-size: 32px; }
       .subtitle { font-size: 16px; }
       .character { font-size: 80px; }
       .game-icon { font-size: 50px; }
       .game-title { font-size: 20px; }
-      .scene-image { font-size: 100px; }
-      .scene-text { font-size: 18px; }
-      .choice-btn { padding: 15px 20px; }
-      .choice-icon { font-size: 45px; }
+      .scene-image { font-size: 90px; }
+      .scene-text { font-size: 17px; }
+      .choice-btn { padding: 12px 18px; min-width: 120px; }
+      .choice-icon { font-size: 40px; }
+      .narrate-controls { flex-direction: column; }
     }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700;900&display=swap" rel="stylesheet">
@@ -364,7 +375,6 @@
     </div>
     
     <div class="games-grid">
-      <!-- Story Adventure -->
       <div class="game-card" onclick="openStory()">
         <span class="game-icon">📚</span>
         <h2 class="game-title">Story Adventure</h2>
@@ -372,7 +382,6 @@
         <span class="play-btn">Play!</span>
       </div>
       
-      <!-- Magic 8 Ball -->
       <div class="game-card" onclick="openMagic8Ball()">
         <span class="game-icon">🔮</span>
         <h2 class="game-title">Magic 8 Ball</h2>
@@ -380,7 +389,6 @@
         <span class="play-btn">Play!</span>
       </div>
       
-      <!-- Fortune Teller -->
       <div class="game-card" onclick="openFortuneTeller()">
         <span class="game-icon">🌟</span>
         <h2 class="game-title">Crystal Ball</h2>
@@ -390,10 +398,11 @@
     </div>
   </div>
   
-  <!-- Story Adventure Modal -->
+  <!-- Story Modal -->
   <div class="modal" id="storyModal">
     <button class="close-btn" onclick="closeStory()">✕</button>
     <div class="story-scene">
+      <div class="progress" id="progress"></div>
       <div class="sound-waves" id="soundWaves">
         <div class="wave-bar"></div>
         <div class="wave-bar"></div>
@@ -402,20 +411,23 @@
       </div>
       <div class="scene-image" id="sceneImage">🏰</div>
       <p class="scene-text" id="sceneText">You're standing in front of a magical castle!</p>
-      <button class="narrate-btn" id="narrateBtn" onclick="narrateText()">🔊 Listen</button>
-      <div class="choices" id="choices">
-        <!-- Choices will be inserted here -->
+      <div class="narrate-controls">
+        <button class="narrate-btn" id="narrateBtn" onclick="narrateText()">🔊 Listen</button>
+        <select class="voice-select" id="voiceSelect" onchange="previewVoice()">
+          <option value="">Loading voices...</option>
+        </select>
       </div>
-      <a class="back-home" onclick="resetStory()">Start over</a>
+      <div class="choices" id="choices"></div>
+      <a class="back-home" onclick="resetStory()">🔄 Start Over</a>
     </div>
   </div>
   
   <!-- Magic 8 Ball Modal -->
   <div class="modal" id="magic8Modal">
     <button class="close-btn" onclick="closeMagic8Ball()">✕</button>
-    <div class="story-scene" style="background: linear-gradient(180deg, #2c3e50 0%, #4a69bd 100%);">
+    <div class="story-scene magic8-scene">
       <div class="scene-image" id="magic8Ball">🎱</div>
-      <p class="scene-text" id="magic8Text" style="color: white;">Think of a question, then shake me!</p>
+      <p class="scene-text light" id="magic8Text">Think of a question, then shake me!</p>
       <button class="narrate-btn" style="background: #4ecdc4;" onclick="shakeMagic8Ball()">🖐️ Shake!</button>
     </div>
   </div>
@@ -423,145 +435,362 @@
   <!-- Fortune Teller Modal -->
   <div class="modal" id="fortuneModal">
     <button class="close-btn" onclick="closeFortuneTeller()">✕</button>
-    <div class="story-scene" style="background: linear-gradient(180deg, #9b59b6 0%, #8e44ad 100%);">
+    <div class="story-scene fortune-scene">
       <div class="scene-image" id="fortuneCrystal">🔮</div>
-      <p class="scene-text" id="fortuneText" style="color: white;">Gaze into the crystal and discover your fortune!</p>
+      <p class="scene-text light" id="fortuneText">Gaze into the crystal and discover your fortune!</p>
       <button class="narrate-btn" style="background: #f39c12;" onclick="revealFortune()">✨ Reveal!</button>
     </div>
   </div>
   
   <script>
-    // Story data
+    // Expanded story with much more depth - 4+ levels deep
     const story = {
+      // === STARTING PATHS ===
       start: {
         image: '🏰',
-        text: "You're standing in front of a magical castle! What do you want to do?",
+        text: "You're standing in front of a magical castle! Inside, you hear dragons roaring and wizards casting spells! What do you want to do?",
+        depth: 1,
         choices: [
           { text: "Go inside", icon: "🚪", next: "inside" },
-          { text: "Explore forest", icon: "🌲", next: "forest" }
+          { text: "Look around outside", icon: "🌳", next: "garden" },
+          { text: "Call out for help", icon: "📢", next: "gate_keeper" }
         ]
       },
+      
+      // === CASTLE PATH ===
       inside: {
         image: '🧙‍♂️',
-        text: "A wizard greets you! He offers you a magic trick! What do you choose?",
+        text: "A wise wizard with a long purple robe greets you! He says 'Welcome, young adventurer! I have three magical quests for you to choose from!'",
+        depth: 2,
         choices: [
-          { text: "See magic trick", icon: "🎩", next: "magic" },
-          { text: "Ask for a pet dragon", icon: "🐉", next: "dragon" }
+          { text: "Quest 1: Dragon Egg", icon: "🥚", next: "dragon_quest" },
+          { text: "Quest 2: Magic Forest", icon: "🌲", next: "forest_quest" },
+          { text: "Quest 3: Ocean Treasure", icon: "🌊", next: "ocean_quest" }
         ]
       },
-      forest: {
-        image: '�🦊',
-        text: "You meet a friendly fox in the forest! He wants to show you something!",
+      
+      // === GARDEN PATH ===
+      garden: {
+        image: '🦋',
+        text: "You find a beautiful garden with talking butterflies! A butterfly lands on your shoulder and says 'Hello! Want to see something amazing?'",
+        depth: 2,
         choices: [
-          { text: "Follow the fox", icon: "🐾", next: "pond" },
-          { text: "Look for treasure", icon: "💎", next: "treasure" }
+          { text: "Yes, show me!", icon: "👀", next: "butterfly_show" },
+          { text: "Look for flowers", icon: "🌸", next: "flower_meadow" }
         ]
       },
-      magic: {
-        image: '🎩',
-        text: "POOF! The wizard makes a bunny appear from his hat! You can keep it!",
+      
+      // === GATE KEEPER PATH ===
+      gate_keeper: {
+        image: '🦁',
+        text: "A friendly lion appears at the castle gate! He says 'Only brave adventurers may enter! Can you help me find my lost crown?'",
+        depth: 2,
         choices: [
-          { text: "Hug the bunny", icon: "🐰", next: "bunny_hug" },
-          { text: "Name your bunny", icon: "📝", next: "bunny_name" }
+          { text: "Yes, I'll help!", icon: "💪", next: "lion_help" },
+          { text: "Look somewhere else", icon: "🔍", next: "garden" }
         ]
       },
-      dragon: {
+      
+      // === DRAGON QUEST (3 levels deep) ===
+      dragon_quest: {
         image: '🐉',
-        text: "The wizard waves his wand and a baby dragon appears! It hatches from an egg!",
+        text: "The wizard opens a secret door. You see a baby dragon trapped behind some rocks! The dragon looks at you sadly. What do you do?",
+        depth: 3,
         choices: [
-          { text: "Pet the dragon", icon: "🤚", next: "dragon_pet" },
-          { text: "Name your dragon", icon: "📝", next: "dragon_name" }
+          { text: "Help move rocks", icon: "🪨", next: "dragon_rocks" },
+          { text: "Use magic spell", icon: "✨", next: "dragon_magic" }
         ]
       },
-      pond: {
-        image: '🦆',
-        text: "The fox shows you a pond with magical ducks that glow! What do you do?",
+      dragon_rocks: {
+        image: '💪',
+        text: "You push and push! The baby dragon helps you! Finally, the rocks move away! The dragon is free and hugs you!",
+        depth: 4,
         choices: [
-          { text: "Feed the ducks", icon: "🍞", next: "ducks" },
-          { text: "Take a duck home", icon: "🏠", next: "duck_home" }
+          { text: "Name your dragon", icon: "📝", next: "dragon_name" },
+          { text: "Take dragon home", icon: "🏠", next: "dragon_home" }
         ]
       },
-      treasure: {
-        image: '💰',
-        text: "You found a treasure chest! Inside is a map to even more treasure!",
+      dragon_magic: {
+        image: '✨',
+        text: "You remember a magic spell from school! You wave your hands and say the magic words! POOF! The rocks turn into flowers!",
+        depth: 4,
         choices: [
-          { text: "Follow the map", icon: "🗺️", next: "more_treasure" },
-          { text: "Share with the fox", icon: "🤝", next: "friend_fox" }
-        ]
-      },
-      bunny_hug: {
-        image: '💕',
-        text: "The bunny hugs you back! You're now best friends forever! THE END! 🌟",
-        choices: [
-          { text: "Play again!", icon: "🔄", next: "start" }
-        ]
-      },
-      bunny_name: {
-        image: '🐰',
-        text: "You name your bunny Fluffy! You go home together! THE END! 🌟",
-        choices: [
-          { text: "Play again!", icon: "🔄", next: "start" }
-        ]
-      },
-      dragon_pet: {
-        image: '🐲',
-        text: "The dragon purrs like a cat! It loves you! You become best friends! THE END! 🌟",
-        choices: [
-          { text: "Play again!", icon: "🔄", next: "start" }
+          { text: "Name your dragon", icon: "📝", next: "dragon_name" },
+          { text: "Take dragon home", icon: "🏠", next: "dragon_home" }
         ]
       },
       dragon_name: {
-        image: '🐉',
-        text: "You name your dragon Sparky! You fly away together into the sunset! THE END! 🌟",
-        choices: [
-          { text: "Play again!", icon: "🔄", next: "start" }
-        ]
+        image: '🐲',
+        text: "You name your dragon 'Sparky'! Sparky can fly and breathe fire (but only small puffs!). Sparky chooses you as their best friend forever!",
+        depth: 5,
+        isEnding: true,
+        endingText: "🐲 YOU AND SPARKY BECAME BEST FRIENDS! THE END! 🐲"
       },
-      ducks: {
-        image: '🌈',
-        text: "The ducks turn into rainbow colors! They fly you around the world! THE END! 🌈",
-        choices: [
-          { text: "Play again!", icon: "🔄", next: "start" }
-        ]
-      },
-      duck_home: {
+      dragon_home: {
         image: '🏠',
-        text: "You take a magic duck home! It lays golden eggs every day! THE END! 🥚",
+        text: "You and your new dragon friend Sparky fly home together! You build a special dragon bed in your backyard. Now Sparky lives with you forever!",
+        depth: 5,
+        isEnding: true,
+        endingText: "🏠 YOU GOT A DRAGON FRIEND! THE END! 🏠"
+      },
+      
+      // === FOREST QUEST (3 levels deep) ===
+      forest_quest: {
+        image: '🦊',
+        text: "You enter a magical forest with glowing trees! A clever fox appears and says 'I know where the forest treasure is hidden! Follow me!'",
+        depth: 3,
         choices: [
-          { text: "Play again!", icon: "🔄", next: "start" }
+          { text: "Follow the fox", icon: "🐾", next: "fox_leads" },
+          { text: "Explore alone", icon: "🧭", next: "forest_alone" }
         ]
       },
-      more_treasure: {
+      fox_leads: {
+        image: '💎',
+        text: "The fox leads you through a secret tunnel! You find a cave full of sparkling gems and a sleeping giant! The giant starts to wake up!",
+        depth: 4,
+        choices: [
+          { text: "Hide and wait", icon: "🙈", next: "hide_giant" },
+          { text: "Say hello politely", icon: "👋", next: "giant_friendly" }
+        ]
+      },
+      forest_alone: {
+        image: '🌺',
+        text: "You find a hidden garden with rainbow flowers! A unicorn appears! The unicorn has lost its magic horn and looks sad.",
+        depth: 4,
+        choices: [
+          { text: "Help find horn", icon: "🔍", next: "unicorn_horn" },
+          { text: "Ride the unicorn", icon: "🏇", next: "unicorn_ride" }
+        ]
+      },
+      hide_giant: {
+        image: '🤫',
+        text: "You and the fox hide behind a big gem! The giant looks around, then goes back to sleep. You quietly take some gems and escape!",
+        depth: 5,
+        isEnding: true,
+        endingText: "💎 YOU GOT MAGIC GEMS! THE END! 💎"
+      },
+      giant_friendly: {
+        image: '🤝',
+        text: "The giant isn't scary at all! He's friendly and gives you a magic gem that grants wishes! You become friends with the giant!",
+        depth: 5,
+        isEnding: true,
+        endingText: "🌟 YOU GOT A WISH GEM! THE END! 🌟"
+      },
+      unicorn_horn: {
+        image: '🦄',
+        text: "You search the garden and find the unicorn's horn in a puddle! The unicorn is so happy! As a thank you, it gives you rainbow wings!",
+        depth: 5,
+        isEnding: true,
+        endingText: "🦄 YOU GOT MAGIC WINGS! THE END! 🦄"
+      },
+      unicorn_ride: {
+        image: '🌈',
+        text: "The unicorn takes you flying through the clouds! You visit the rainbow kingdom in the sky! The rainbow king makes you a prince or princess!",
+        depth: 5,
+        isEnding: true,
+        endingText: "👑 YOU BECAME ROYALTY! THE END! 👑"
+      },
+      
+      // === OCEAN QUEST (3 levels deep) ===
+      ocean_quest: {
+        image: '🐠',
+        text: "The wizard opens a magical portal! You arrive at a beach with crystal clear water. A friendly dolphin invites you for a swim!",
+        depth: 3,
+        choices: [
+          { text: "Swim with dolphin", icon: "🏊", next: "dolphin_swim" },
+          { text: "Explore the shore", icon: "🐚", next: "shore_explore" }
+        ]
+      },
+      dolphin_swim: {
+        image: '🧜‍♀️',
+        text: "The dolphin takes you to an underwater kingdom! A mermaid queen greets you and says 'Welcome to our kingdom! Would you like a tour or a gift?'",
+        depth: 4,
+        choices: [
+          { text: "Take the tour", icon: "🚢", next: "mermaid_tour" },
+          { text: "Choose a gift", icon: "🎁", next: "mermaid_gift" }
+        ]
+      },
+      shore_explore: {
+        image: '🦀',
+        text: "You find a crab wearing a tiny crown! He says 'I'm the crab king! Help me find my lost treasure chest and I'll share it with you!'",
+        depth: 4,
+        choices: [
+          { text: "Help the crab", icon: "🔍", next: "crab_treasure" },
+          { text: "Keep exploring", icon: "🚶", next: "mermaid_tour" }
+        ]
+      },
+      mermaid_tour: {
+        image: '🐚',
+        text: "The mermaid shows you the most beautiful coral reef with singing fish and dancing jellyfish! You have the best day ever!",
+        depth: 5,
+        isEnding: true,
+        endingText: "🐠 YOU VISITED AN UNDERWATER KINGDOM! THE END! 🐠"
+      },
+      mermaid_gift: {
+        image: '✨',
+        text: "The mermaid gives you a magic shell that lets you breathe underwater! You can visit the ocean anytime you want now!",
+        depth: 5,
+        isEnding: true,
+        endingText: "🐚 YOU GOT A MAGIC SHELL! THE END! 🐚"
+      },
+      crab_treasure: {
         image: '👑',
-        text: "The treasure was a king's crown! You become friends with the king! THE END! 👑",
+        text: "You find the treasure chest buried in the sand! It's full of gold coins and a tiny crown just your size! The crab king is so happy!",
+        depth: 5,
+        isEnding: true,
+        endingText: "👑 YOU FOUND TREASURE! THE END! 👑"
+      },
+      
+      // === BUTTERFLY SHOW ===
+      butterfly_show: {
+        image: '🦋',
+        text: "The butterfly leads you to a hidden cave filled with glowing butterflies! They dance around you and grant you one wish!",
+        depth: 3,
         choices: [
-          { text: "Play again!", icon: "🔄", next: "start" }
+          { text: "Wish for magic", icon: "✨", next: "wish_magic" },
+          { text: "Wish for friendship", icon: "💕", next: "wish_friend" }
         ]
       },
-      friend_fox: {
-        image: '💖',
-        text: "You and the fox become best friends and share all the treasure! THE END! 💖",
+      wish_magic: {
+        image: '🎩',
+        text: "POOF! You can do magic now! You become the youngest wizard in the land! Everyone comes to you for magical help!",
+        depth: 4,
+        isEnding: true,
+        endingText: "🧙‍♂️ YOU BECAME A WIZARD! THE END! 🧙‍♂️"
+      },
+      wish_friend: {
+        image: '🐾',
+        text: "A magical bunny appears! It hops right into your arms and becomes your best friend! It will be with you forever!",
+        depth: 4,
+        isEnding: true,
+        endingText: "🐰 YOU GOT A MAGIC BUNNY! THE END! 🐰"
+      },
+      
+      // === FLOWER MEADOW ===
+      flower_meadow: {
+        image: '🌸',
+        text: "You find the most beautiful meadow full of rainbow flowers! A baby fawn appears and its mom is a magical deer with glowing antlers!",
+        depth: 3,
         choices: [
-          { text: "Play again!", icon: "🔄", next: "start" }
+          { text: "Say hello", icon: "👋", next: "fawn_hello" },
+          { text: "Pick some flowers", icon: "💐", next: "fawn_gift" }
         ]
+      },
+      fawn_hello: {
+        image: '🦌',
+        text: "The magical deer says 'Thank you for being kind! We never get visitors anymore!' They invite you to their secret forest home for cake and tea!",
+        depth: 4,
+        isEnding: true,
+        endingText: "🦌 YOU MADE MAGICAL DEER FRIENDS! THE END! 🦌"
+      },
+      fawn_gift: {
+        image: '🌺',
+        text: "You pick the most beautiful flower and give it to the fawn's mom. She gives you a magic flower that never wilts and makes everyone happy who smells it!",
+        depth: 4,
+        isEnding: true,
+        endingText: "🌸 YOU GOT A MAGIC FLOWER! THE END! 🌸"
+      },
+      
+      // === LION HELP ===
+      lion_help: {
+        image: '👑',
+        text: "The lion says 'My crown is in the spooky cave nearby! But there's a mean troll guarding it!' Do you have the courage to help?",
+        depth: 3,
+        choices: [
+          { text: "Face the troll", icon: "💪", next: "troll_fight" },
+          { text: "Find another way", icon: "🔄", next: "troll_trick" }
+        ]
+      },
+      troll_fight: {
+        image: '🦸',
+        text: "You sing the loudest, silliest song you know! The troll laughs so hard he forgets about guarding the crown! You grab it and run!",
+        depth: 4,
+        isEnding: true,
+        endingText: "🦁 YOU GOT THE LION'S CROWN BACK! THE END! 🦁"
+      },
+      troll_trick: {
+        image: '🧠',
+        text: "You find a secret passage around the cave! You sneak in, grab the crown, and sneak out! The lion is so happy and makes you his royal helper!",
+        depth: 4,
+        isEnding: true,
+        endingText: "⭐ YOU BECAME A ROYAL HELPER! THE END! ⭐"
       }
     };
     
     let currentNode = 'start';
     let speechSynthesis = window.speechSynthesis;
-    let currentUtterance = null;
+    let availableVoices = [];
+    
+    // Load voices
+    function loadVoices() {
+      availableVoices = speechSynthesis.getVoices();
+      const voiceSelect = document.getElementById('voiceSelect');
+      voiceSelect.innerHTML = '';
+      
+      // Try to find the best voices (prefer English voices with natural quality)
+      const englishVoices = availableVoices.filter(v => v.lang.startsWith('en'));
+      const otherVoices = availableVoices.filter(v => !v.lang.startsWith('en'));
+      
+      // Group by quality indicators
+      const prioritizedVoices = [...englishVoices];
+      
+      if (prioritizedVoices.length === 0) {
+        voiceSelect.innerHTML = '<option value="">No voices available</option>';
+        return;
+      }
+      
+      prioritizedVoices.forEach((voice, i) => {
+        const option = document.createElement('option');
+        option.value = voice.name;
+        // Mark premium voices
+        const label = voice.name.includes('Premium') || voice.name.includes('Natural') || voice.name.includes('Enhanced') 
+          ? `${voice.name} ⭐` 
+          : voice.name;
+        option.textContent = label.length > 40 ? label.substring(0, 37) + '...' : label;
+        voiceSelect.appendChild(option);
+      });
+      
+      // Try to select a good default (prefer Google or natural-sounding voices)
+      const goodDefault = prioritizedVoices.find(v => 
+        v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Samantha') || v.name.includes('Daniel')
+      );
+      if (goodDefault) {
+        voiceSelect.value = goodDefault.name;
+      }
+    }
+    
+    // Load voices when available
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = loadVoices;
+    }
+    loadVoices();
+    
+    function previewVoice() {
+      const voiceSelect = document.getElementById('voiceSelect');
+      if (voiceSelect.value) {
+        speechSynthesis.cancel();
+        const test = new SpeechSynthesisUtterance("Hello! Pick me for the story!");
+        const voice = availableVoices.find(v => v.name === voiceSelect.value);
+        if (voice) test.voice = voice;
+        test.rate = 0.9;
+        speechSynthesis.speak(test);
+      }
+    }
     
     function narrateText() {
-      // Cancel any ongoing speech
       speechSynthesis.cancel();
       
       const text = document.getElementById('sceneText').textContent;
+      const voiceSelect = document.getElementById('voiceSelect');
       
       currentUtterance = new SpeechSynthesisUtterance(text);
+      
+      const voice = availableVoices.find(v => v.name === voiceSelect.value);
+      if (voice) currentUtterance.voice = voice;
+      
       currentUtterance.rate = 0.85;
       currentUtterance.pitch = 1.1;
       
-      // Show sound waves
       document.getElementById('soundWaves').classList.add('active');
       document.getElementById('narrateBtn').classList.add('speaking');
       
@@ -573,37 +802,53 @@
       speechSynthesis.speak(currentUtterance);
     }
     
+    function updateProgress(depth) {
+      const progress = document.getElementById('progress');
+      progress.innerHTML = '';
+      for (let i = 1; i <= 5; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'progress-dot' + (i <= depth ? ' active' : '');
+        progress.appendChild(dot);
+      }
+    }
+    
     function showScene(nodeKey) {
       currentNode = nodeKey;
       const node = story[nodeKey];
       
-      // Cancel ongoing speech
       speechSynthesis.cancel();
       
-      // Animate scene change
       const sceneImage = document.getElementById('sceneImage');
       const sceneText = document.getElementById('sceneText');
       
       sceneImage.style.animation = 'none';
-      sceneImage.offsetHeight; // Trigger reflow
+      sceneImage.offsetHeight;
       sceneImage.style.animation = 'sceneIn 0.5s ease-out';
       
       sceneImage.textContent = node.image;
       sceneText.textContent = node.text;
       
-      // Update choices
+      updateProgress(node.depth);
+      
       const choicesDiv = document.getElementById('choices');
       choicesDiv.innerHTML = '';
       
-      node.choices.forEach(choice => {
-        const btn = document.createElement('button');
-        btn.className = 'choice-btn';
-        btn.innerHTML = `<span class="choice-icon">${choice.icon}</span><span class="choice-text">${choice.text}</span>`;
-        btn.onclick = () => showScene(choice.next);
-        choicesDiv.appendChild(btn);
-      });
+      if (node.isEnding) {
+        // Show ending
+        const endingDiv = document.createElement('div');
+        endingDiv.className = 'ending-text';
+        endingDiv.textContent = node.endingText;
+        choicesDiv.appendChild(endingDiv);
+      } else {
+        node.choices.forEach(choice => {
+          const btn = document.createElement('button');
+          btn.className = 'choice-btn';
+          btn.innerHTML = `<span class="choice-icon">${choice.icon}</span><span class="choice-text">${choice.text}</span>`;
+          btn.onclick = () => showScene(choice.next);
+          choicesDiv.appendChild(btn);
+        });
+      }
       
-      // Auto-narrate for young children
       setTimeout(narrateText, 500);
     }
     
@@ -613,6 +858,7 @@
     
     function openStory() {
       document.getElementById('storyModal').classList.add('active');
+      loadVoices(); // Refresh voices
       showScene('start');
     }
     
@@ -623,16 +869,16 @@
     
     // Magic 8 Ball
     const magic8Responses = [
-      "Yes! Definitely yes! ✨",
-      "No, I don't think so... 🤔",
-      "Maybe... try again! 🌟",
-      "I see good things coming! 🍀",
-      "Ask again later! ⏰",
-      "YES! Absolutely! 🚀",
-      "My magic says no... 💫",
-      "Very likely! 🌈",
-      "I think so! 👍",
-      "Not looking good... 👀"
+      "Yes! Definitely yes!",
+      "No, I don't think so...",
+      "Maybe... try again!",
+      "I see good things coming!",
+      "Ask again later!",
+      "YES! Absolutely!",
+      "My magic says no...",
+      "Very likely!",
+      "I think so!",
+      "Not looking good..."
     ];
     
     function shakeMagic8Ball() {
@@ -640,8 +886,8 @@
       
       const ball = document.getElementById('magic8Ball');
       const text = document.getElementById('magic8Text');
+      const voiceSelect = document.getElementById('voiceSelect');
       
-      // Shake animation
       ball.style.animation = 'none';
       ball.offsetHeight;
       ball.style.animation = 'shake 0.5s ease-in-out';
@@ -651,6 +897,8 @@
         text.textContent = response;
         
         const utterance = new SpeechSynthesisUtterance(response);
+        const voice = availableVoices.find(v => v.name === voiceSelect.value);
+        if (voice) utterance.voice = voice;
         utterance.rate = 0.9;
         utterance.pitch = 1.2;
         speechSynthesis.speak(utterance);
@@ -659,6 +907,7 @@
     
     function openMagic8Ball() {
       document.getElementById('magic8Modal').classList.add('active');
+      loadVoices();
       document.getElementById('magic8Text').textContent = "Think of a question, then shake me!";
     }
     
@@ -669,16 +918,16 @@
     
     // Fortune Teller
     const fortunes = [
-      "A great adventure is waiting for you! ⚔️",
-      "You will make a new friend soon! 💕",
-      "Something magical will happen today! ✨",
-      "Good luck is coming your way! 🍀",
-      "Someone special is thinking of you! 💭",
-      "A surprise is waiting for you! 🎁",
-      "Today is a lucky day! 🌟",
-      "You will learn something new! 📚",
-      "Happiness is coming your way! ☀️",
-      "A dream will come true! 🌙"
+      "A great adventure is waiting for you!",
+      "You will make a new friend soon!",
+      "Something magical will happen today!",
+      "Good luck is coming your way!",
+      "Someone special is thinking of you!",
+      "A surprise is waiting for you!",
+      "Today is a lucky day!",
+      "You will learn something new!",
+      "Happiness is coming your way!",
+      "A dream will come true!"
     ];
     
     function revealFortune() {
@@ -686,8 +935,8 @@
       
       const crystal = document.getElementById('fortuneCrystal');
       const text = document.getElementById('fortuneText');
+      const voiceSelect = document.getElementById('voiceSelect');
       
-      // Spin animation
       crystal.style.animation = 'none';
       crystal.offsetHeight;
       crystal.style.animation = 'spin 1s ease-in-out';
@@ -698,6 +947,8 @@
         crystal.textContent = '🌟';
         
         const utterance = new SpeechSynthesisUtterance(fortune);
+        const voice = availableVoices.find(v => v.name === voiceSelect.value);
+        if (voice) utterance.voice = voice;
         utterance.rate = 0.85;
         utterance.pitch = 1.15;
         speechSynthesis.speak(utterance);
@@ -706,6 +957,7 @@
     
     function openFortuneTeller() {
       document.getElementById('fortuneModal').classList.add('active');
+      loadVoices();
       document.getElementById('fortuneText').textContent = "Gaze into the crystal and discover your fortune!";
       document.getElementById('fortuneCrystal').textContent = '🔮';
     }
@@ -715,7 +967,7 @@
       document.getElementById('fortuneModal').classList.remove('active');
     }
     
-    // Add shake animation
+    // Animations
     const style = document.createElement('style');
     style.textContent = `
       @keyframes shake {
