@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>...</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --bg: #0a0a0f; --surface: #12121a; --border: #1e1e2e; --accent: #c084fc; --accent-dim: #7c3aed; --text: #e2e8f0; --text-dim: #64748b; --glow: rgba(192, 132, 252, 0.15); --red: #f87171; --green: #4ade80; }
+    body { font-family: 'Space Grotesk', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow: hidden; }
+    body::before { content: ''; position: fixed; inset: 0; opacity: 0.03; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1; }
+    .grid-bg { position: fixed; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 60px 60px; opacity: 0.3; mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%); -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%); }
+    .orb { position: fixed; border-radius: 50%; filter: blur(100px); opacity: 0.15; pointer-events: none; }
+    .orb-1 { width: 500px; height: 500px; background: #7c3aed; top: -150px; left: -100px; }
+    .orb-2 { width: 400px; height: 400px; background: #c084fc; bottom: -100px; right: -100px; }
+    .orb-3 { width: 300px; height: 300px; background: #f472b6; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.08; }
+    .gate { position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
+    .gate.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .gate-logo { font-size: 64px; margin-bottom: 32px; animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.95); } }
+    .gate-title { font-family: 'JetBrains Mono', monospace; font-size: 14px; letter-spacing: 6px; text-transform: uppercase; color: var(--accent); margin-bottom: 40px; }
+    .status-line { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-dim); margin-bottom: 16px; min-height: 18px; }
+    .enter-btn { background: transparent; border: 1px solid var(--accent-dim); color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; padding: 14px 48px; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; }
+    .enter-btn::before { content: ''; position: absolute; inset: 0; background: var(--glow); opacity: 0; transition: opacity 0.3s; }
+    .enter-btn:hover { border-color: var(--accent); box-shadow: 0 0 30px var(--glow); }
+    .enter-btn:hover::before { opacity: 1; }
+    .enter-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .enter-btn:disabled:hover { box-shadow: none; }
+    .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; vertical-align: middle; }
+    .status-dot.online { background: var(--green); box-shadow: 0 0 10px var(--green); }
+    .status-dot.offline { background: var(--red); box-shadow: 0 0 10px var(--red); }
+    .status-dot.checking { background: var(--accent); animation: pulse 1s infinite; }
+    .webui-frame { position: fixed; inset: 0; z-index: 50; opacity: 0; visibility: hidden; transition: opacity 0.5s ease; }
+    .webui-frame.active { opacity: 1; visibility: visible; }
+    .webui-frame iframe { width: 100%; height: 100%; border: none; }
+    .back-btn { position: fixed; top: 12px; left: 12px; z-index: 200; background: var(--surface); border: 1px solid var(--border); color: var(--text-dim); font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 6px 14px; cursor: pointer; opacity: 0; visibility: hidden; transition: all 0.3s; }
+    .back-btn.visible { opacity: 0.6; visibility: visible; }
+    .back-btn:hover { opacity: 1; color: var(--accent); border-color: var(--accent-dim); }
+    .footer { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-dim); opacity: 0.4; letter-spacing: 1px; }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="gate" id="gate">
+    <div class="gate-logo">🧠</div>
+    <div class="gate-title">N O L I M I T S</div>
+    <div class="status-line" id="status"><span class="status-dot checking"></span>checking inference endpoint...</div>
+    <button class="enter-btn" id="enterBtn" disabled onclick="enterWebUI()">enter</button>
+  </div>
+  <div class="webui-frame" id="webuiFrame"><iframe id="webuiIframe" title="Open WebUI"></iframe></div>
+  <button class="back-btn" id="backBtn" onclick="exitWebUI()">← esc</button>
+  <div class="footer">robot arms // local inference</div>
+  <script>
+    const WEBUI_URL = 'https://llm.robotarms.ai';
+    const statusEl = document.getElementById('status');
+    const enterBtn = document.getElementById('enterBtn');
+    const gate = document.getElementById('gate');
+    const webuiFrame = document.getElementById('webuiFrame');
+    const webuiIframe = document.getElementById('webuiIframe');
+    const backBtn = document.getElementById('backBtn');
+    let isOnline = false;
+    async function checkEndpoint() {
+      try {
+        const ctrl = new AbortController();
+        setTimeout(() => ctrl.abort(), 5000);
+        await fetch(WEBUI_URL, { mode: 'no-cors', signal: ctrl.signal });
+        isOnline = true;
+        statusEl.innerHTML = '<span class="status-dot online"></span>inference online';
+        enterBtn.disabled = false;
+      } catch {
+        isOnline = false;
+        statusEl.innerHTML = '<span class="status-dot offline"></span>endpoint unreachable';
+        enterBtn.disabled = true;
+        setTimeout(checkEndpoint, 5000);
+      }
+    }
+    function enterWebUI() { if (!isOnline) return; webuiIframe.src = WEBUI_URL; gate.classList.add('hidden'); webuiFrame.classList.add('active'); backBtn.classList.add('visible'); }
+    function exitWebUI() { gate.classList.remove('hidden'); webuiFrame.classList.remove('active'); backBtn.classList.remove('visible'); webuiIframe.src = ''; }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && webuiFrame.classList.contains('active')) exitWebUI(); if (e.key === 'Enter' && !enterBtn.disabled && !webuiFrame.classList.contains('active')) enterWebUI(); });
+    checkEndpoint();
+  </script>
+</body>
+</html>
