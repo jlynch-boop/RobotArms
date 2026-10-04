@@ -1,0 +1,5 @@
+<svg class="brand-mark" viewBox="0 0 48 48" role="img" aria-label="Robot Arms mark" xmlns="http://www.w3.org/2000/svg">
+  <rect width="48" height="48" rx="8" fill="#0e332e"/>
+  <path d="M15 35V14h5v8h8v-8h5v21h-5v-8h-8v8h-5Z" fill="#f4f0e8"/>
+  <circle cx="35.5" cy="12.5" r="3.5" fill="#d96532"/>
+</svg>
