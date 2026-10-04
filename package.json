@@ -1,0 +1,10 @@
+{
+  "name": "robotarms-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "validate": "node scripts/validate.mjs",
+    "preview": "npx --yes wrangler dev --config wrangler.jsonc --local"
+  }
+}

@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Odin's Magic Lab - Fun AI Games for Kids">
+  <title>Odin's Magic Lab</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Comic Neue', 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    .sparkles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    
+    .sparkle {
+      position: absolute;
+      font-size: 24px;
+      animation: float 6s ease-in-out infinite;
+      opacity: 0.6;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+    
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    
+    .header {
+      text-align: center;
+      padding: 30px 20px;
+    }
+    
+    .title {
+      font-size: 48px;
+      font-weight: 900;
+      color: white;
+      text-shadow: 4px 4px 0 #5a4a9e, 6px 6px 20px rgba(0,0,0,0.3);
+      margin-bottom: 10px;
+      animation: titleBounce 2s ease-in-out infinite;
+    }
+    
+    @keyframes titleBounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+    
+    .subtitle {
+      font-size: 20px;
+      color: #ffeaa7;
+      text-shadow: 2px 2px 0 #5a4a9e;
+    }
+    
+    .welcome-character {
+      text-align: center;
+      margin: 20px 0;
+    }
+    
+    .character {
+      font-size: 120px;
+      animation: wave 1s ease-in-out infinite;
+      display: inline-block;
+    }
+    
+    @keyframes wave {
+      0%, 100% { transform: rotate(-5deg); }
+      50% { transform: rotate(5deg); }
+    }
+    
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+    
+    .game-card {
+      background: white;
+      border-radius: 25px;
+      padding: 30px 25px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 4px solid transparent;
+    }
+    
+    .game-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+    
+    .game-card:nth-child(1) { border-color: #ff6b6b; }
+    .game-card:nth-child(2) { border-color: #4ecdc4; }
+    .game-card:nth-child(3) { border-color: #ffe66d; }
+    
+    .game-icon { font-size: 70px; margin-bottom: 15px; display: block; }
+    .game-title { font-size: 24px; font-weight: 900; color: #2d3436; margin-bottom: 8px; }
+    .game-desc { font-size: 16px; color: #636e72; }
+    
+    .play-btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 12px 30px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .play-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.5);
+    }
+    
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .modal.active { display: flex; }
+    
+    .story-scene {
+      background: linear-gradient(180deg, #87CEEB 0%, #98D8C8 100%);
+      border-radius: 30px;
+      padding: 30px;
+      max-width: 750px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      max-height: 95vh;
+      overflow-y: auto;
+    }
+    
+    .scene-image {
+      font-size: 120px;
+      margin-bottom: 15px;
+      animation: sceneIn 0.5s ease-out;
+    }
+    
+    @keyframes sceneIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    
+    .scene-text {
+      font-size: 20px;
+      color: #2d3436;
+      margin-bottom: 20px;
+      min-height: 50px;
+      line-height: 1.4;
+    }
+    
+    .narrate-controls {
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .narrate-btn {
+      padding: 12px 25px;
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    
+    .narrate-btn:hover { transform: scale(1.05); }
+    .narrate-btn:active { transform: scale(0.95); }
+    
+    .sound-waves {
+      display: none;
+      justify-content: center;
+      gap: 4px;
+      margin-bottom: 15px;
+    }
+    
+    .sound-waves.active { display: flex; }
+    
+    .wave-bar {
+      width: 8px;
+      height: 30px;
+      background: #ff6b6b;
+      border-radius: 4px;
+      animation: soundWave 0.5s ease-in-out infinite;
+    }
+    
+    .wave-bar:nth-child(2) { animation-delay: 0.1s; }
+    .wave-bar:nth-child(3) { animation-delay: 0.2s; }
+    .wave-bar:nth-child(4) { animation-delay: 0.3s; }
+    
+    @keyframes soundWave {
+      0%, 100% { transform: scaleY(0.3); }
+      50% { transform: scaleY(1); }
+    }
+    
+    .choices {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+    
+    .choice-btn {
+      background: white;
+      border: 4px solid #4ecdc4;
+      border-radius: 20px;
+      padding: 15px 25px;
+      cursor: pointer;
+      transition: all 0.3s;
+      flex: 1;
+      min-width: 140px;
+      max-width: 180px;
+    }
+    
+    .choice-btn:hover {
+      background: #4ecdc4;
+      transform: scale(1.05);
+    }
+    
+    .choice-btn:active { transform: scale(0.95); }
+    
+    .choice-icon { font-size: 50px; display: block; margin-bottom: 8px; }
+    .choice-text { font-size: 15px; color: #2d3436; font-weight: 700; }
+    
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      font-size: 22px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    
+    .close-btn:hover { transform: scale(1.1); }
+    
+    .back-home {
+      display: inline-block;
+      margin-top: 10px;
+      color: #ffeaa7;
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 15px;
+      background: rgba(0,0,0,0.2);
+      padding: 8px 16px;
+      border-radius: 20px;
+    }
+    
+    .speaking { animation: pulse 0.5s ease-in-out infinite; }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    
+    /* Progress indicator */
+    .progress {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    
+    .progress-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+    }
+    
+    .progress-dot.active { background: #ffe66d; }
+    
+    /* Ending celebration */
+    .ending-text {
+      font-size: 24px;
+      font-weight: 900;
+      color: #764ba2;
+      margin-bottom: 15px;
+    }
+    
+    /* Magic 8 Ball specific */
+    .magic8-scene { background: linear-gradient(180deg, #2c3e50 0%, #4a69bd 100%); }
+    .fortune-scene { background: linear-gradient(180deg, #9b59b6 0%, #8e44ad 100%); }
+    
+    .scene-text.light { color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
+    
+    @media (max-width: 600px) {
+      .title { font-size: 32px; }
+      .subtitle { font-size: 16px; }
+      .character { font-size: 80px; }
+      .game-icon { font-size: 50px; }
+      .game-title { font-size: 20px; }
+      .scene-image { font-size: 90px; }
+      .scene-text { font-size: 17px; }
+      .choice-btn { padding: 12px 18px; min-width: 120px; }
+      .choice-icon { font-size: 40px; }
+      .narrate-controls { flex-direction: column; }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="sparkles">
+    <div class="sparkle" style="left: 10%; top: 20%; animation-delay: 0s;">✨</div>
+    <div class="sparkle" style="left: 20%; top: 60%; animation-delay: 1s;">⭐</div>
+    <div class="sparkle" style="left: 80%; top: 30%; animation-delay: 2s;">✨</div>
+    <div class="sparkle" style="left: 70%; top: 70%; animation-delay: 0.5s;">⭐</div>
+    <div class="sparkle" style="left: 50%; top: 15%; animation-delay: 1.5s;">✨</div>
+    <div class="sparkle" style="left: 90%; top: 80%; animation-delay: 2.5s;">⭐</div>
+    <div class="sparkle" style="left: 5%; top: 85%; animation-delay: 3s;">✨</div>
+    <div class="sparkle" style="left: 40%; top: 90%; animation-delay: 0.8s;">⭐</div>
+  </div>
+  
+  <div class="container">
+    <header class="header">
+      <h1 class="title">Odin's Magic Lab</h1>
+      <p class="subtitle">✨ Fun AI Games for Kids ✨</p>
+    </header>
+    
+    <div class="welcome-character">
+      <span class="character">🧙‍♂️</span>
+    </div>
+    
+    <div class="games-grid">
+      <div class="game-card" onclick="openStory()">
+        <span class="game-icon">📚</span>
+        <h2 class="game-title">Story Adventure</h2>
+        <p class="game-desc">Click pictures to go on a magical journey!</p>
+        <span class="play-btn">Play!</span>
+      </div>
+      
+      <div class="game-card" onclick="openMagic8Ball()">
+        <span class="game-icon">🔮</span>
+        <h2 class="game-title">Magic 8 Ball</h2>
+        <p class="game-desc">Ask the magic ball your question!</p>
+        <span class="play-btn">Play!</span>
+      </div>
+      
+      <div class="game-card" onclick="openFortuneTeller()">
+        <span class="game-icon">🌟</span>
+        <h2 class="game-title">Crystal Ball</h2>
+        <p class="game-desc">See your fortune in the crystal!</p>
+        <span class="play-btn">Play!</span>
+      </div>
+      
+      <a href="/prints.html" class="game-card" style="text-decoration: none;">
+        <span class="game-icon">🖨️</span>
+        <h2 class="game-title">3D Prints</h2>
+        <p class="game-desc">Cool designs to print at home!</p>
+        <span class="play-btn">Browse!</span>
+      </a>
+    </div>
+  </div>
+  
+  <!-- Story Modal -->
+  <div class="modal" id="storyModal">
+    <button class="close-btn" onclick="closeStory()">✕</button>
+    <div class="story-scene">
+      <div class="progress" id="progress"></div>
+      <div class="sound-waves" id="soundWaves">
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+      </div>
+      <div class="scene-image" id="sceneImage">🏰</div>
+      <p class="scene-text" id="sceneText">You're standing in front of a magical castle!</p>
+      <div class="narrate-controls">
+        <button class="narrate-btn" id="narrateBtn" onclick="narrateText()">🔊 Listen</button>
+      </div>
+      <div class="choices" id="choices"></div>
+      <a class="back-home" onclick="resetStory()">🔄 Start Over</a>
+    </div>
+  </div>
+  
+  <!-- Magic 8 Ball Modal -->
+  <div class="modal" id="magic8Modal">
+    <button class="close-btn" onclick="closeMagic8Ball()">✕</button>
+    <div class="story-scene magic8-scene">
+      <div class="scene-image" id="magic8Ball">🎱</div>
+      <p class="scene-text light" id="magic8Text">Think of a question, then shake me!</p>
+      <button class="narrate-btn" style="background: #4ecdc4;" onclick="shakeMagic8Ball()">🖐️ Shake!</button>
+    </div>
+  </div>
+  
+  <!-- Fortune Teller Modal -->
+  <div class="modal" id="fortuneModal">
+    <button class="close-btn" onclick="closeFortuneTeller()">✕</button>
+    <div class="story-scene fortune-scene">
+      <div class="scene-image" id="fortuneCrystal">🔮</div>
+      <p class="scene-text light" id="fortuneText">Gaze into the crystal and discover your fortune!</p>
+      <button class="narrate-btn" style="background: #f39c12;" onclick="revealFortune()">✨ Reveal!</button>
+    </div>
+  </div>
+  
+  <script>
+    // Expanded story with much more depth - 4+ levels deep
+    const story = {
+      // === STARTING PATHS ===
+      start: {
+        image: '🏰',
+        text: "You're standing in front of a magical castle! Inside, you hear dragons roaring and wizards casting spells! What do you want to do?",
+        depth: 1,
+        choices: [
+          { text: "Go inside", icon: "🚪", next: "inside" },
+          { text: "Look around outside", icon: "🌳", next: "garden" },
+          { text: "Call out for help", icon: "📢", next: "gate_keeper" }
+        ]
+      },
+      
+      // === CASTLE PATH ===
+      inside: {
+        image: '🧙‍♂️',
+        text: "A wise wizard with a long purple robe greets you! He says 'Welcome, young adventurer! I have three magical quests for you to choose from!'",
+        depth: 2,
+        choices: [
+          { text: "Quest 1: Dragon Egg", icon: "🥚", next: "dragon_quest" },
+          { text: "Quest 2: Magic Forest", icon: "🌲", next: "forest_quest" },
+          { text: "Quest 3: Ocean Treasure", icon: "🌊", next: "ocean_quest" }
+        ]
+      },
+      
+      // === GARDEN PATH ===
+      garden: {
+        image: '🦋',
+        text: "You find a beautiful garden with talking butterflies! A butterfly lands on your shoulder and says 'Hello! Want to see something amazing?'",
+        depth: 2,
+        choices: [
+          { text: "Yes, show me!", icon: "👀", next: "butterfly_show" },
+          { text: "Look for flowers", icon: "🌸", next: "flower_meadow" }
+        ]
+      },
+      
+      // === GATE KEEPER PATH ===
+      gate_keeper: {
+        image: '🦁',
+        text: "A friendly lion appears at the castle gate! He says 'Only brave adventurers may enter! Can you help me find my lost crown?'",
+        depth: 2,
+        choices: [
+          { text: "Yes, I'll help!", icon: "💪", next: "lion_help" },
+          { text: "Look somewhere else", icon: "🔍", next: "garden" }
+        ]
+      },
+      
+      // === DRAGON QUEST (3 levels deep) ===
+      dragon_quest: {
+        image: '🐉',
+        text: "The wizard opens a secret door. You see a baby dragon trapped behind some rocks! The dragon looks at you sadly. What do you do?",
+        depth: 3,
+        choices: [
+          { text: "Help move rocks", icon: "🪨", next: "dragon_rocks" },
+          { text: "Use magic spell", icon: "✨", next: "dragon_magic" }
+        ]
+      },
+      dragon_rocks: {
+        image: '💪',
+        text: "You push and push! The baby dragon helps you! Finally, the rocks move away! The dragon is free and hugs you!",
+        depth: 4,
+        choices: [
+          { text: "Name your dragon", icon: "📝", next: "dragon_name" },
+          { text: "Take dragon home", icon: "🏠", next: "dragon_home" }
+        ]
+      },
+      dragon_magic: {
+        image: '✨',
+        text: "You remember a magic spell from school! You wave your hands and say the magic words! POOF! The rocks turn into flowers!",
+        depth: 4,
+        choices: [
+          { text: "Name your dragon", icon: "📝", next: "dragon_name" },
+          { text: "Take dragon home", icon: "🏠", next: "dragon_home" }
+        ]
+      },
+      dragon_name: {
+        image: '🐲',
+        text: "You name your dragon 'Sparky'! Sparky can fly and breathe fire (but only small puffs!). Sparky chooses you as their best friend forever!",
+        depth: 5,
+        isEnding: true,
+        endingText: "🐲 YOU AND SPARKY BECAME BEST FRIENDS! THE END! 🐲"
+      },
+      dragon_home: {
+        image: '🏠',
+        text: "You and your new dragon friend Sparky fly home together! You build a special dragon bed in your backyard. Now Sparky lives with you forever!",
+        depth: 5,
+        isEnding: true,
+        endingText: "🏠 YOU GOT A DRAGON FRIEND! THE END! 🏠"
+      },
+      
+      // === FOREST QUEST (3 levels deep) ===
+      forest_quest: {
+        image: '🦊',
+        text: "You enter a magical forest with glowing trees! A clever fox appears and says 'I know where the forest treasure is hidden! Follow me!'",
+        depth: 3,
+        choices: [
+          { text: "Follow the fox", icon: "🐾", next: "fox_leads" },
+          { text: "Explore alone", icon: "🧭", next: "forest_alone" }
+        ]
+      },
+      fox_leads: {
+        image: '💎',
+        text: "The fox leads you through a secret tunnel! You find a cave full of sparkling gems and a sleeping giant! The giant starts to wake up!",
+        depth: 4,
+        choices: [
+          { text: "Hide and wait", icon: "🙈", next: "hide_giant" },
+          { text: "Say hello politely", icon: "👋", next: "giant_friendly" }
+        ]
+      },
+      forest_alone: {
+        image: '🌺',
+        text: "You find a hidden garden with rainbow flowers! A unicorn appears! The unicorn has lost its magic horn and looks sad.",
+        depth: 4,
+        choices: [
+          { text: "Help find horn", icon: "🔍", next: "unicorn_horn" },
+          { text: "Ride the unicorn", icon: "🏇", next: "unicorn_ride" }
+        ]
+      },
+      hide_giant: {
+        image: '🤫',
+        text: "You and the fox hide behind a big gem! The giant looks around, then goes back to sleep. You quietly take some gems and escape!",
+        depth: 5,
+        isEnding: true,
+        endingText: "💎 YOU GOT MAGIC GEMS! THE END! 💎"
+      },
+      giant_friendly: {
+        image: '🤝',
+        text: "The giant isn't scary at all! He's friendly and gives you a magic gem that grants wishes! You become friends with the giant!",
+        depth: 5,
+        isEnding: true,
+        endingText: "🌟 YOU GOT A WISH GEM! THE END! 🌟"
+      },
+      unicorn_horn: {
+        image: '🦄',
+        text: "You search the garden and find the unicorn's horn in a puddle! The unicorn is so happy! As a thank you, it gives you rainbow wings!",
+        depth: 5,
+        isEnding: true,
+        endingText: "🦄 YOU GOT MAGIC WINGS! THE END! 🦄"
+      },
+      unicorn_ride: {
+        image: '🌈',
+        text: "The unicorn takes you flying through the clouds! You visit the rainbow kingdom in the sky! The rainbow king makes you a prince or princess!",
+        depth: 5,
+        isEnding: true,
+        endingText: "👑 YOU BECAME ROYALTY! THE END! 👑"
+      },
+      
+      // === OCEAN QUEST (3 levels deep) ===
+      ocean_quest: {
+        image: '🐠',
+        text: "The wizard opens a magical portal! You arrive at a beach with crystal clear water. A friendly dolphin invites you for a swim!",
+        depth: 3,
+        choices: [
+          { text: "Swim with dolphin", icon: "🏊", next: "dolphin_swim" },
+          { text: "Explore the shore", icon: "🐚", next: "shore_explore" }
+        ]
+      },
+      dolphin_swim: {
+        image: '🧜‍♀️',
+        text: "The dolphin takes you to an underwater kingdom! A mermaid queen greets you and says 'Welcome to our kingdom! Would you like a tour or a gift?'",
+        depth: 4,
+        choices: [
+          { text: "Take the tour", icon: "🚢", next: "mermaid_tour" },
+          { text: "Choose a gift", icon: "🎁", next: "mermaid_gift" }
+        ]
+      },
+      shore_explore: {
+        image: '🦀',
+        text: "You find a crab wearing a tiny crown! He says 'I'm the crab king! Help me find my lost treasure chest and I'll share it with you!'",
+        depth: 4,
+        choices: [
+          { text: "Help the crab", icon: "🔍", next: "crab_treasure" },
+          { text: "Keep exploring", icon: "🚶", next: "mermaid_tour" }
+        ]
+      },
+      mermaid_tour: {
+        image: '🐚',
+        text: "The mermaid shows you the most beautiful coral reef with singing fish and dancing jellyfish! You have the best day ever!",
+        depth: 5,
+        isEnding: true,
+        endingText: "🐠 YOU VISITED AN UNDERWATER KINGDOM! THE END! 🐠"
+      },
+      mermaid_gift: {
+        image: '✨',
+        text: "The mermaid gives you a magic shell that lets you breathe underwater! You can visit the ocean anytime you want now!",
+        depth: 5,
+        isEnding: true,
+        endingText: "🐚 YOU GOT A MAGIC SHELL! THE END! 🐚"
+      },
+      crab_treasure: {
+        image: '👑',
+        text: "You find the treasure chest buried in the sand! It's full of gold coins and a tiny crown just your size! The crab king is so happy!",
+        depth: 5,
+        isEnding: true,
+        endingText: "👑 YOU FOUND TREASURE! THE END! 👑"
+      },
+      
+      // === BUTTERFLY SHOW ===
+      butterfly_show: {
+        image: '🦋',
+        text: "The butterfly leads you to a hidden cave filled with glowing butterflies! They dance around you and grant you one wish!",
+        depth: 3,
+        choices: [
+          { text: "Wish for magic", icon: "✨", next: "wish_magic" },
+          { text: "Wish for friendship", icon: "💕", next: "wish_friend" }
+        ]
+      },
+      wish_magic: {
+        image: '🎩',
+        text: "POOF! You can do magic now! You become the youngest wizard in the land! Everyone comes to you for magical help!",
+        depth: 4,
+        isEnding: true,
+        endingText: "🧙‍♂️ YOU BECAME A WIZARD! THE END! 🧙‍♂️"
+      },
+      wish_friend: {
+        image: '🐾',
+        text: "A magical bunny appears! It hops right into your arms and becomes your best friend! It will be with you forever!",
+        depth: 4,
+        isEnding: true,
+        endingText: "🐰 YOU GOT A MAGIC BUNNY! THE END! 🐰"
+      },
+      
+      // === FLOWER MEADOW ===
+      flower_meadow: {
+        image: '🌸',
+        text: "You find the most beautiful meadow full of rainbow flowers! A baby fawn appears and its mom is a magical deer with glowing antlers!",
+        depth: 3,
+        choices: [
+          { text: "Say hello", icon: "👋", next: "fawn_hello" },
+          { text: "Pick some flowers", icon: "💐", next: "fawn_gift" }
+        ]
+      },
+      fawn_hello: {
+        image: '🦌',
+        text: "The magical deer says 'Thank you for being kind! We never get visitors anymore!' They invite you to their secret forest home for cake and tea!",
+        depth: 4,
+        isEnding: true,
+        endingText: "🦌 YOU MADE MAGICAL DEER FRIENDS! THE END! 🦌"
+      },
+      fawn_gift: {
+        image: '🌺',
+        text: "You pick the most beautiful flower and give it to the fawn's mom. She gives you a magic flower that never wilts and makes everyone happy who smells it!",
+        depth: 4,
+        isEnding: true,
+        endingText: "🌸 YOU GOT A MAGIC FLOWER! THE END! 🌸"
+      },
+      
+      // === LION HELP ===
+      lion_help: {
+        image: '👑',
+        text: "The lion says 'My crown is in the spooky cave nearby! But there's a mean troll guarding it!' Do you have the courage to help?",
+        depth: 3,
+        choices: [
+          { text: "Face the troll", icon: "💪", next: "troll_fight" },
+          { text: "Find another way", icon: "🔄", next: "troll_trick" }
+        ]
+      },
+      troll_fight: {
+        image: '🦸',
+        text: "You sing the loudest, silliest song you know! The troll laughs so hard he forgets about guarding the crown! You grab it and run!",
+        depth: 4,
+        isEnding: true,
+        endingText: "🦁 YOU GOT THE LION'S CROWN BACK! THE END! 🦁"
+      },
+      troll_trick: {
+        image: '🧠',
+        text: "You find a secret passage around the cave! You sneak in, grab the crown, and sneak out! The lion is so happy and makes you his royal helper!",
+        depth: 4,
+        isEnding: true,
+        endingText: "⭐ YOU BECAME A ROYAL HELPER! THE END! ⭐"
+      }
+    };
+    
+    let currentNode = 'start';
+    let speechSynthesis = window.speechSynthesis;
+    let selectedVoice = null;
+    
+    // Auto-select best available voice
+    function selectBestVoice() {
+      const voices = speechSynthesis.getVoices();
+      const englishVoices = voices.filter(v => v.lang.startsWith('en'));
+      
+      // Priority order for natural-sounding voices
+      const priorityNames = ['Google', 'Natural', 'Enhanced', 'Premium', 'Samantha', 'Daniel', 'Karen', 'Moira', 'Karen', 'Zira'];
+      
+      for (const priority of priorityNames) {
+        const found = englishVoices.find(v => v.name.includes(priority));
+        if (found) {
+          selectedVoice = found;
+          console.log('Selected voice:', found.name);
+          return;
+        }
+      }
+      
+      // Fallback to any English voice
+      if (englishVoices.length > 0) {
+        selectedVoice = englishVoices[0];
+        console.log('Selected voice:', selectedVoice.name);
+      }
+    }
+    
+    // Load voices when available
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = selectBestVoice;
+    }
+    selectBestVoice();
+    
+    function narrateText() {
+      speechSynthesis.cancel();
+      
+      const text = document.getElementById('sceneText').textContent;
+      
+      currentUtterance = new SpeechSynthesisUtterance(text);
+      
+      if (selectedVoice) currentUtterance.voice = selectedVoice;
+      
+      currentUtterance.rate = 0.85;
+      currentUtterance.pitch = 1.1;
+      
+      document.getElementById('soundWaves').classList.add('active');
+      document.getElementById('narrateBtn').classList.add('speaking');
+      
+      currentUtterance.onend = function() {
+        document.getElementById('soundWaves').classList.remove('active');
+        document.getElementById('narrateBtn').classList.remove('speaking');
+      };
+      
+      speechSynthesis.speak(currentUtterance);
+    }
+    
+    function updateProgress(depth) {
+      const progress = document.getElementById('progress');
+      progress.innerHTML = '';
+      for (let i = 1; i <= 5; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'progress-dot' + (i <= depth ? ' active' : '');
+        progress.appendChild(dot);
+      }
+    }
+    
+    function showScene(nodeKey) {
+      currentNode = nodeKey;
+      const node = story[nodeKey];
+      
+      speechSynthesis.cancel();
+      
+      const sceneImage = document.getElementById('sceneImage');
+      const sceneText = document.getElementById('sceneText');
+      
+      sceneImage.style.animation = 'none';
+      sceneImage.offsetHeight;
+      sceneImage.style.animation = 'sceneIn 0.5s ease-out';
+      
+      sceneImage.textContent = node.image;
+      sceneText.textContent = node.text;
+      
+      updateProgress(node.depth);
+      
+      const choicesDiv = document.getElementById('choices');
+      choicesDiv.innerHTML = '';
+      
+      if (node.isEnding) {
+        // Show ending
+        const endingDiv = document.createElement('div');
+        endingDiv.className = 'ending-text';
+        endingDiv.textContent = node.endingText;
+        choicesDiv.appendChild(endingDiv);
+      } else {
+        node.choices.forEach(choice => {
+          const btn = document.createElement('button');
+          btn.className = 'choice-btn';
+          btn.innerHTML = `<span class="choice-icon">${choice.icon}</span><span class="choice-text">${choice.text}</span>`;
+          btn.onclick = () => showScene(choice.next);
+          choicesDiv.appendChild(btn);
+        });
+      }
+      
+      setTimeout(narrateText, 500);
+    }
+    
+    function resetStory() {
+      showScene('start');
+    }
+    
+    function openStory() {
+      document.getElementById('storyModal').classList.add('active');
+      showScene('start');
+    }
+    
+    function closeStory() {
+      speechSynthesis.cancel();
+      document.getElementById('storyModal').classList.remove('active');
+    }
+    
+    // Magic 8 Ball
+    const magic8Responses = [
+      "Yes! Definitely yes!",
+      "No, I don't think so...",
+      "Maybe... try again!",
+      "I see good things coming!",
+      "Ask again later!",
+      "YES! Absolutely!",
+      "My magic says no...",
+      "Very likely!",
+      "I think so!",
+      "Not looking good..."
+    ];
+    
+    function shakeMagic8Ball() {
+      speechSynthesis.cancel();
+      
+      const ball = document.getElementById('magic8Ball');
+      const text = document.getElementById('magic8Text');
+      
+      ball.style.animation = 'none';
+      ball.offsetHeight;
+      ball.style.animation = 'shake 0.5s ease-in-out';
+      
+      setTimeout(() => {
+        const response = magic8Responses[Math.floor(Math.random() * magic8Responses.length)];
+        text.textContent = response;
+        
+        const utterance = new SpeechSynthesisUtterance(response);
+        if (selectedVoice) utterance.voice = selectedVoice;
+        utterance.rate = 0.9;
+        utterance.pitch = 1.2;
+        speechSynthesis.speak(utterance);
+      }, 600);
+    }
+    
+    function openMagic8Ball() {
+      document.getElementById('magic8Modal').classList.add('active');
+      document.getElementById('magic8Text').textContent = "Think of a question, then shake me!";
+    }
+    
+    function closeMagic8Ball() {
+      speechSynthesis.cancel();
+      document.getElementById('magic8Modal').classList.remove('active');
+    }
+    
+    // Fortune Teller
+    const fortunes = [
+      "A great adventure is waiting for you!",
+      "You will make a new friend soon!",
+      "Something magical will happen today!",
+      "Good luck is coming your way!",
+      "Someone special is thinking of you!",
+      "A surprise is waiting for you!",
+      "Today is a lucky day!",
+      "You will learn something new!",
+      "Happiness is coming your way!",
+      "A dream will come true!"
+    ];
+    
+    function revealFortune() {
+      speechSynthesis.cancel();
+      
+      const crystal = document.getElementById('fortuneCrystal');
+      const text = document.getElementById('fortuneText');
+      
+      crystal.style.animation = 'none';
+      crystal.offsetHeight;
+      crystal.style.animation = 'spin 1s ease-in-out';
+      
+      setTimeout(() => {
+        const fortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+        text.textContent = fortune;
+        crystal.textContent = '🌟';
+        
+        const utterance = new SpeechSynthesisUtterance(fortune);
+        if (selectedVoice) utterance.voice = selectedVoice;
+        utterance.rate = 0.85;
+        utterance.pitch = 1.15;
+        speechSynthesis.speak(utterance);
+      }, 500);
+    }
+    
+    function openFortuneTeller() {
+      document.getElementById('fortuneModal').classList.add('active');
+      document.getElementById('fortuneText').textContent = "Gaze into the crystal and discover your fortune!";
+      document.getElementById('fortuneCrystal').textContent = '🔮';
+    }
+    
+    function closeFortuneTeller() {
+      speechSynthesis.cancel();
+      document.getElementById('fortuneModal').classList.remove('active');
+    }
+    
+    // Animations
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: rotate(0deg); }
+        25% { transform: rotate(-15deg); }
+        50% { transform: rotate(15deg); }
+        75% { transform: rotate(-10deg); }
+      }
+      @keyframes spin {
+        0% { transform: scale(1) rotate(0deg); }
+        50% { transform: scale(1.2) rotate(180deg); }
+        100% { transform: scale(1) rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // Close modal on outside click
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.remove('active');
+          speechSynthesis.cancel();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
